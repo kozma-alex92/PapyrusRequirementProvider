@@ -80,7 +80,7 @@ import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 // End of user code
 
 @OslcService(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_DOMAIN)
-@Path("Requirement_ServiceProvider/{serviceProviderId}/service1/requirementCollections")
+@Path("serviceProviders/{serviceProviderId}/service1/requirementCollections")
 public class RequirementCollectionService
 {
 	@Context private HttpServletRequest httpServletRequest;

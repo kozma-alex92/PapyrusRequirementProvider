@@ -51,7 +51,7 @@ import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 // End of user code
 
 @OslcService(OslcConstants.OSLC_CORE_DOMAIN)
-@Path("Requirement_ServiceProvider")
+@Path("serviceProviders")
 public class ServiceProviderService
 {
 	@Context private HttpServletRequest httpServletRequest;

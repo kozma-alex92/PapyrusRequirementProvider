@@ -22,6 +22,7 @@
 package hu.bme.mit.papyrus.oslc.adaptor.servlet;
 
 import java.net.URISyntaxException;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -69,6 +70,7 @@ public class Application extends OslcWinkApplication {
 
     static
     {
+    	System.out.println("asd");
     	try
     	{
     		RESOURCE_CLASSES.addAll(JenaProvidersRegistry.getProviders());

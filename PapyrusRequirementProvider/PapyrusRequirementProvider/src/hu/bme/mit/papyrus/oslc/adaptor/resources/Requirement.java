@@ -139,7 +139,7 @@ public static URI constructURI(final String serviceProviderId, final String requ
     Map<String, Object> pathParameters = new HashMap<String, Object>();
     pathParameters.put("serviceProviderId", serviceProviderId);
     pathParameters.put("requirementId", requirementId);
-    String instanceURI = "Requirement_ServiceProvider/{serviceProviderId}/service2/requirements/{requirementId}";
+    String instanceURI = "serviceProviders/{serviceProviderId}/service2/requirements/{requirementId}";
   
     final UriBuilder builder = UriBuilder.fromUri(basePath);
     return builder.path(instanceURI).buildFromMap(pathParameters);

@@ -122,7 +122,7 @@ public class ServiceProviderCatalogSingleton
         String basePath = ServletListener.getServicesBase();
         Map<String, Object> pathParameters = new HashMap<String, Object>();
         pathParameters.put("serviceProviderId", serviceProviderId);
-        String instanceURI = "Requirement_ServiceProvider/{serviceProviderId}";
+        String instanceURI = "serviceProviders/{serviceProviderId}";
       
         final UriBuilder builder = UriBuilder.fromUri(basePath);
         return builder.path(instanceURI).buildFromMap(pathParameters);

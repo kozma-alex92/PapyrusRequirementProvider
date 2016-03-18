@@ -29,14 +29,17 @@ import java.util.List;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
-
+import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProvidersFactory;
 import hu.bme.mit.papyrus.oslc.adaptor.ServiceProviderInfo;
+import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 // Start of user code imports
+import java.util.ArrayList;
+import java.net.URISyntaxException;
 // End of user code
 
 // Start of user code pre_class_code
@@ -69,6 +72,16 @@ public class PapyrusRequirementProviderManager {
 		ServiceProviderInfo[] serviceProviderInfos = {};
 		// TODO Implement code to return the set of ServiceProviders
 		// Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
+		
+		final List<ServiceProviderInfo> infos = new ArrayList<ServiceProviderInfo>();
+        final ServiceProviderInfo serviceProviderInfo = new ServiceProviderInfo();
+        serviceProviderInfo.name = "Provider";
+        serviceProviderInfo.serviceProviderId = "1";
+        infos.add(serviceProviderInfo);
+        
+        serviceProviderInfos = infos.toArray(new ServiceProviderInfo[infos.size()]);
+		
+		
 		// End of user code
 		return serviceProviderInfos;
     }
@@ -113,7 +126,8 @@ public class PapyrusRequirementProviderManager {
     {
 		List<Requirement> resources = null;
 		// TODO Implement code to return a set of resources
-		
+		Requirements r = new Requirements();
+		resources = Requirements.getRequirements();
 		// Start of user code queryRequirements
 		// End of user code
 		return resources;
@@ -140,6 +154,7 @@ public class PapyrusRequirementProviderManager {
     {
 		Requirement aResource = null;
 		// TODO Implement code to return a resource
+		
 		
 		// Start of user code getRequirement
 		// End of user code

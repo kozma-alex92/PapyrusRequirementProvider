@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <oslc4j_ai:AdaptorInterface xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:oslc4j_ai="http://org.eclipse.lyo/oslc4j/adaptorInterface" name="PapyrusRequirementProvider" javaClassBaseNamespace="hu.bme.mit.papyrus.oslc.adaptor" javaFilesBasePath="/src/" jspFilesBasePath="/WebContent" javascriptFilesBasePath="/WebContent" backendCodeTemplate_getResources="">
   <serviceProviderCatalog title="ServiceProviderCatalogSingleton" description="The Service Provider Catalog">
-    <serviceProviders title="Model" description="The Service Provider for the requirement and requirement collection Services" serviceNamespace="Requirement_ServiceProvider" instanceID="">
+    <serviceProviders title="Model" description="The Service Provider for the requirement and requirement collection Services" serviceNamespace="" instanceID="">
       <services domainSpecification="//@specification/@domainSpecifications.0">
         <creationFactories title="Requirement Collection Factory" label="Requirement_Collection_Factory" creationURI="" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
         <queryCapabilities title="Requirement Collection Query Capability" label="RequirementCollection Query" queryBaseURI="rc_query" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
