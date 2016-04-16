@@ -80,7 +80,7 @@ import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 // End of user code
 
 @OslcService(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_DOMAIN)
-@Path("serviceProviders/{serviceProviderId}/service2/requirements")
+@Path("serviceProviders/RequirementService{id}/requirements")
 public class RequirementService
 {
 	@Context private HttpServletRequest httpServletRequest;
@@ -122,7 +122,7 @@ public class RequirementService
     @Path("r_query")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public Requirement[] queryRequirements(
-													@PathParam("serviceProviderId") final String serviceProviderId ,
+													@PathParam("id") final String id ,
     		                                 		@QueryParam("oslc.where") final String where,
     		                                 		@QueryParam("page") final String pageString,
 													@QueryParam("limit") final String limitString) throws IOException, ServletException 
@@ -139,7 +139,7 @@ public class RequirementService
 		// Start of user code queryRequirements
 		// End of user code
 
-        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, serviceProviderId, where, page, limit);
+        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id, where, page, limit);
         return resources.toArray(new Requirement [resources.size()]);
     }
 
@@ -159,7 +159,7 @@ public class RequirementService
     @Path("r_query")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response queryRequirementsAsHtml(
-									@PathParam("serviceProviderId") final String serviceProviderId ,
+									@PathParam("id") final String id ,
                                		@QueryParam("oslc.where") final String where,
                                		@QueryParam("page") final String pageString,
 			                        @QueryParam("limit") final String limitString) throws ServletException, IOException
@@ -176,7 +176,7 @@ public class RequirementService
 		// Start of user code queryRequirementsAsHtml
 		// End of user code
 
-        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, serviceProviderId, where, page, limit);
+        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id, where, page, limit);
 		
         if (resources!= null) {
         	httpServletRequest.setAttribute("resources", resources);
@@ -219,12 +219,12 @@ public class RequirementService
     @Consumes({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public Response createRequirement(
-            @PathParam("serviceProviderId") final String serviceProviderId , 
+            @PathParam("id") final String id , 
             final Requirement aResource
         ) throws IOException, ServletException
     {
 		try {
-    		Requirement newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, serviceProviderId);
+    		Requirement newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, id);
 			httpServletResponse.setHeader("ETag", PapyrusRequirementProviderManager.getETagFromRequirement(newResource));
 	        return Response.created(newResource.getAbout()).entity(aResource).build();
     	} catch (Exception e) {
@@ -248,13 +248,13 @@ public class RequirementService
     @Path("{requirementId}")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public Requirement getRequirement(
-                @PathParam("serviceProviderId") final String serviceProviderId, @PathParam("requirementId") final String requirementId
+                @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
         ) throws IOException, ServletException, URISyntaxException
     {
 		// Start of user code getResource_init
 		// End of user code
 
-        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, serviceProviderId, requirementId);
+        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
 
         if (aRequirement != null) {
 			// Start of user code getRequirement
@@ -279,13 +279,13 @@ public class RequirementService
     @Path("{requirementId}")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getRequirementAsHtml(
-        @PathParam("serviceProviderId") final String serviceProviderId, @PathParam("requirementId") final String requirementId
+        @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
         ) throws ServletException, IOException, URISyntaxException
 	{	
 		// Start of user code getRequirementAsHtml_init
 		// End of user code
 
-        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, serviceProviderId, requirementId);
+        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
 
         if (aRequirement != null) {
         	httpServletRequest.setAttribute("aRequirement", aRequirement);

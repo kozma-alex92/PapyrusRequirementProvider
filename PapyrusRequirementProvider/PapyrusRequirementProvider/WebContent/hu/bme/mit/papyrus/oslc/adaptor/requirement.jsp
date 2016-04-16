@@ -83,7 +83,25 @@ End of user code
 				<h1>Resource Presentation</h1>
                 <p>Summary: <%= aRequirement.toHtml() %><br /></p>
 				<h2>Properties</h2>
+				<h3>Papyrus properties</h3>
 				<table style="clear: both;">
+					<tr>
+						<td><%= aRequirement.trackedByToHtml()%></td>
+					</tr>
+					<tr>
+						<td><%= aRequirement.satisfiedByToHtml()%></td>
+					</tr>
+					<tr>
+						<td><%= aRequirement.titleToHtml()%></td>
+					</tr>
+					<tr>
+						<td><%= aRequirement.descriptionToHtml()%></td>
+					</tr>
+					<tr>
+						<td><%= aRequirement.identifierToHtml()%></td>
+					</tr>
+				</table>
+	<table style="clear: both;">
 					<tr>
 						<td><%= aRequirement.elaboratedByToHtml()%></td>
 					</tr>
@@ -163,7 +181,6 @@ End of user code
 						<td><%= aRequirement.instanceShapeToHtml()%></td>
 					</tr>
 				</table>
-
 			</div>
 		</div>
 		

@@ -28,7 +28,7 @@ package hu.bme.mit.papyrus.oslc.adaptor;
 public class ServiceProviderInfo {
 
     public String name;
-    public String serviceProviderId;
+    public String id;
 
 	// Start of user code class_attributes
 	// End of user code

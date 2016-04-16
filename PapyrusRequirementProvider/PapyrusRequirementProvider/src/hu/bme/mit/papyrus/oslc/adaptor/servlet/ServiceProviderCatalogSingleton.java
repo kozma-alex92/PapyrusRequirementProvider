@@ -117,30 +117,30 @@ public class ServiceProviderCatalogSingleton
     }
 
 
-    private static URI constructServiceProviderURI(final String serviceProviderId)
+    private static URI constructServiceProviderURI(final String id)
     {
         String basePath = ServletListener.getServicesBase();
         Map<String, Object> pathParameters = new HashMap<String, Object>();
-        pathParameters.put("serviceProviderId", serviceProviderId);
-        String instanceURI = "serviceProviders/{serviceProviderId}";
+        pathParameters.put("id", id);
+        String instanceURI = "serviceProviders/RequirementService{id}";
       
         final UriBuilder builder = UriBuilder.fromUri(basePath);
         return builder.path(instanceURI).buildFromMap(pathParameters);
     }
 
-    private static String serviceProviderIdentifier(final String serviceProviderId)
+    private static String serviceProviderIdentifier(final String id)
     {
-        String identifier = "/" + serviceProviderId;
+        String identifier = "/" + id;
         return identifier;
     }
 
-    public static ServiceProvider getServiceProvider(HttpServletRequest httpServletRequest, final String serviceProviderId) 
+    public static ServiceProvider getServiceProvider(HttpServletRequest httpServletRequest, final String id) 
     {
         ServiceProvider serviceProvider;
 
         synchronized(serviceProviders)
         {     	
-            String identifier = serviceProviderIdentifier(serviceProviderId);
+            String identifier = serviceProviderIdentifier(id);
             serviceProvider = serviceProviders.get(identifier);
             
             //One retry refreshing the service providers
@@ -161,15 +161,15 @@ public class ServiceProviderCatalogSingleton
 
     public static ServiceProvider registerServiceProvider(final HttpServletRequest httpServletRequest,
                                                           final ServiceProvider serviceProvider,
-                                                          final String serviceProviderId) 
+                                                          final String id) 
                                                 throws URISyntaxException
     {
         synchronized(serviceProviders)
         {
-            final URI serviceProviderURI = constructServiceProviderURI(serviceProviderId);
+            final URI serviceProviderURI = constructServiceProviderURI(id);
             return registerServiceProviderNoSync(serviceProviderURI,
                                                  serviceProvider,
-                                                 serviceProviderId);
+                                                 id);
         }
     }
 
@@ -183,11 +183,11 @@ public class ServiceProviderCatalogSingleton
  */
     private static ServiceProvider registerServiceProviderNoSync(final URI serviceProviderURI,
                                                                  final ServiceProvider serviceProvider
-                                                                 , final String serviceProviderId)
+                                                                 , final String id)
     {
         final SortedSet<URI> serviceProviderDomains = getServiceProviderDomains(serviceProvider);
 
-        String identifier = serviceProviderIdentifier(serviceProviderId);
+        String identifier = serviceProviderIdentifier(id);
         serviceProvider.setAbout(serviceProviderURI);
         serviceProvider.setIdentifier(identifier);
         serviceProvider.setCreated(new Date());
@@ -202,22 +202,22 @@ public class ServiceProviderCatalogSingleton
     }
     
     // This version is for self-registration and thus package-protected
-    static ServiceProvider registerServiceProvider(final ServiceProvider serviceProvider, final String serviceProviderId)
+    static ServiceProvider registerServiceProvider(final ServiceProvider serviceProvider, final String id)
                                             throws URISyntaxException
     {
         synchronized(serviceProviders)
         {
-            final URI serviceProviderURI = constructServiceProviderURI(serviceProviderId);
+            final URI serviceProviderURI = constructServiceProviderURI(id);
 
-            return registerServiceProviderNoSync(serviceProviderURI, serviceProvider, serviceProviderId);
+            return registerServiceProviderNoSync(serviceProviderURI, serviceProvider, id);
         }
     }
 
-    public static void deregisterServiceProvider(final String serviceProviderId)
+    public static void deregisterServiceProvider(final String id)
     {
         synchronized(serviceProviders)
         {
-            final ServiceProvider deregisteredServiceProvider = serviceProviders.remove(serviceProviderIdentifier(serviceProviderId));
+            final ServiceProvider deregisteredServiceProvider = serviceProviders.remove(serviceProviderIdentifier(id));
 
             if (deregisteredServiceProvider != null)
             {
@@ -278,16 +278,16 @@ public class ServiceProviderCatalogSingleton
 	        ServiceProviderInfo [] serviceProviderInfos = PapyrusRequirementProviderManager.getServiceProviderInfos(httpServletRequest);
 	        //Register each service provider
 	        for (ServiceProviderInfo serviceProviderInfo : serviceProviderInfos) {
-				String identifier = serviceProviderIdentifier(serviceProviderInfo.serviceProviderId);
+				String identifier = serviceProviderIdentifier(serviceProviderInfo.id);
 		        if (! serviceProviders.containsKey(identifier)) {
 					String serviceProviderName = serviceProviderInfo.name;
 					String title = "Model: " + serviceProviderName + "(" + identifier + ")";
-					String description = "The Service Provider for the requirement and requirement collection Services: " + serviceProviderName + "(" + identifier + ")";
+					String description = "The Service Provider for the requirement Services: " + serviceProviderName + "(" + identifier + ")";
 					Publisher publisher = new Publisher("invalid", "invalid");
 		        	Map<String, Object> parameterMap = new HashMap<String, Object>();
-                    parameterMap.put("serviceProviderId", serviceProviderInfo.serviceProviderId);
+                    parameterMap.put("id", serviceProviderInfo.id);
 		        	final ServiceProvider aServiceProvider = ServiceProvidersFactory.createServiceProvider(basePath, title, description, publisher, parameterMap);
-		            registerServiceProvider(aServiceProvider, serviceProviderInfo.serviceProviderId);
+		            registerServiceProvider(aServiceProvider, serviceProviderInfo.id);
 	        	}
 	        }
 

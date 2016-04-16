@@ -101,12 +101,12 @@ public class ServiceProviderService
 
 	 
     @GET
-    @Path("{serviceProviderId}")
+    @Path("RequirementService{id}")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public ServiceProvider getServiceProvider(@PathParam("serviceProviderId") final String serviceProviderId)
+    public ServiceProvider getServiceProvider(@PathParam("id") final String id)
     {
     	httpServletResponse.addHeader("Oslc-Core-Version","2.0");
-        return ServiceProviderCatalogSingleton.getServiceProvider(httpServletRequest, serviceProviderId);
+        return ServiceProviderCatalogSingleton.getServiceProvider(httpServletRequest, id);
     }
     
  
@@ -119,11 +119,11 @@ public class ServiceProviderService
      * @param serviceProviderId
      */
     @GET
-    @Path("{serviceProviderId}")
+    @Path("RequirementService{id}")
     @Produces(MediaType.TEXT_HTML)
-    public void getHtmlServiceProvider(@PathParam("serviceProviderId") final String serviceProviderId)
+    public void getHtmlServiceProvider(@PathParam("id") final String id)
     {
-    	ServiceProvider serviceProvider = ServiceProviderCatalogSingleton.getServiceProvider(httpServletRequest, serviceProviderId);
+    	ServiceProvider serviceProvider = ServiceProviderCatalogSingleton.getServiceProvider(httpServletRequest, id);
     	Service [] services = serviceProvider.getServices();
 
         httpServletRequest.setAttribute("serviceProvider", serviceProvider);

@@ -38,7 +38,6 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProviderFactory;
 
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderConstants;
-import hu.bme.mit.papyrus.oslc.adaptor.services.RequirementCollectionService;
 import hu.bme.mit.papyrus.oslc.adaptor.services.RequirementService;
 
 // Start of user code imports
@@ -48,7 +47,7 @@ public class ServiceProvidersFactory
 {
     private static Class<?>[] RESOURCE_CLASSES =
     {
-		RequirementCollectionService.class, RequirementService.class
+		RequirementService.class
     };
 
     private ServiceProvidersFactory()

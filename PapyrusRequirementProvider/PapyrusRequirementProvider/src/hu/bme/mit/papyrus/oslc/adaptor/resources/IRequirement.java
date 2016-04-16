@@ -95,6 +95,11 @@ public interface IRequirement
     public void addCreator(final Person creator );
     public void addContributor(final Person contributor );
     public void addType(final Type type );
+    public void addVerifiedBy(final Link verifiedBy );
+    public void addTracedTo(final Link tracedTo );
+    public void addRefinedBy(final Link refinedBy );
+    public void addDerivedFrom(final Link derivedFrom );
+    public void addDerived(final Link derived );
 
 	@OslcName("elaboratedBy")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "elaboratedBy")
@@ -332,6 +337,51 @@ public interface IRequirement
 	@OslcTitle("")
     public Link getInstanceShape();
 
+	@OslcName("verifiedBy")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "verifiedBy")
+	@OslcDescription("TODO: verifiedBy Description")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getVerifiedBy();
+
+	@OslcName("tracedTo")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "tracedTo")
+	@OslcDescription("TODO: tracedTo Description")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getTracedTo();
+
+	@OslcName("refinedBy")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "refinedBy")
+	@OslcDescription("TODO: refinedBy Description")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getRefinedBy();
+
+	@OslcName("derivedFrom")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "derivedFrom")
+	@OslcDescription("The subject is derived from the object")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getDerivedFrom();
+
+	@OslcName("derived")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "derived")
+	@OslcDescription("The object is derived from the subject.")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getDerived();
+
 
     public void setElaboratedBy(final HashSet<Link> elaboratedBy );
     public void setElaborates(final HashSet<Link> elaborates );
@@ -359,5 +409,10 @@ public interface IRequirement
     public void setType(final HashSet<Type> type );
     public void setServiceProvider(final URI serviceProvider );
     public void setInstanceShape(final Link instanceShape );
+    public void setVerifiedBy(final HashSet<Link> verifiedBy );
+    public void setTracedTo(final HashSet<Link> tracedTo );
+    public void setRefinedBy(final HashSet<Link> refinedBy );
+    public void setDerivedFrom(final HashSet<Link> derivedFrom );
+    public void setDerived(final HashSet<Link> derived );
 }
 

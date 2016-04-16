@@ -22,7 +22,6 @@
 package hu.bme.mit.papyrus.oslc.adaptor.servlet;
 
 import java.net.URISyntaxException;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -56,10 +55,8 @@ import hu.bme.mit.papyrus.oslc.adaptor.services.ServiceProviderService;
 
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
-import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderConstants;
-import hu.bme.mit.papyrus.oslc.adaptor.services.RequirementCollectionService;
 import hu.bme.mit.papyrus.oslc.adaptor.services.RequirementService;
 
 
@@ -70,16 +67,13 @@ public class Application extends OslcWinkApplication {
 
     static
     {
-    	System.out.println("asd");
     	try
     	{
     		RESOURCE_CLASSES.addAll(JenaProvidersRegistry.getProviders());
     		RESOURCE_CLASSES.addAll(Json4JProvidersRegistry.getProviders());
-			RESOURCE_CLASSES.add(RequirementCollectionService.class);
 			RESOURCE_CLASSES.add(RequirementService.class);
 			RESOURCE_CLASSES.add(Person.class);
 			RESOURCE_CLASSES.add(Requirement.class);
-			RESOURCE_CLASSES.add(RequirementCollection.class);
 			RESOURCE_CLASSES.add(Type.class);
     		RESOURCE_CLASSES.add(Class.forName("org.eclipse.lyo.server.oauth.webapp.services.ConsumersService"));
     		RESOURCE_CLASSES.add(Class.forName("org.eclipse.lyo.server.oauth.webapp.services.OAuthService"));
@@ -112,7 +106,6 @@ public class Application extends OslcWinkApplication {
 
 		RESOURCE_SHAPE_PATH_TO_RESOURCE_CLASS_MAP.put(PapyrusRequirementProviderConstants.PATH_PERSON, Person.class);
 		RESOURCE_SHAPE_PATH_TO_RESOURCE_CLASS_MAP.put(PapyrusRequirementProviderConstants.PATH_REQUIREMENT, Requirement.class);
-		RESOURCE_SHAPE_PATH_TO_RESOURCE_CLASS_MAP.put(PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION, RequirementCollection.class);
 		RESOURCE_SHAPE_PATH_TO_RESOURCE_CLASS_MAP.put(PapyrusRequirementProviderConstants.PATH_TYPE, Type.class);
     }
 

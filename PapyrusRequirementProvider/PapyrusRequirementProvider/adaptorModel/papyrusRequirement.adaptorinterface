@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <oslc4j_ai:AdaptorInterface xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:oslc4j_ai="http://org.eclipse.lyo/oslc4j/adaptorInterface" name="PapyrusRequirementProvider" javaClassBaseNamespace="hu.bme.mit.papyrus.oslc.adaptor" javaFilesBasePath="/src/" jspFilesBasePath="/WebContent" javascriptFilesBasePath="/WebContent" backendCodeTemplate_getResources="">
   <serviceProviderCatalog title="ServiceProviderCatalogSingleton" description="The Service Provider Catalog">
-    <serviceProviders title="Model" description="The Service Provider for the requirement and requirement collection Services" serviceNamespace="" instanceID="">
-      <services domainSpecification="//@specification/@domainSpecifications.0">
-        <creationFactories title="Requirement Collection Factory" label="Requirement_Collection_Factory" creationURI="" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
-        <queryCapabilities title="Requirement Collection Query Capability" label="RequirementCollection Query" queryBaseURI="rc_query" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
-        <basicCapabilities instanceID="{requirementCollectionId}" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
-      </services>
+    <serviceProviders title="Model" description="The Service Provider for the requirement Services" serviceNamespace="" instanceID="RequirementService{id}">
       <services domainSpecification="//@specification/@domainSpecifications.0">
         <creationFactories title="Requirement Creation Factory" label="Requirement_Creation" creationURI="" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
         <queryCapabilities title="Requirement Query Capability" label="Requirement Query" queryBaseURI="r_query" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
@@ -43,6 +38,11 @@
         <resourceProperties href="../../org.eclipse.lyo.oslc4j.adaptormodel/model/OSLCCoreSpecificationsSet.xmi#//@domainSpecifications.2/@resourceProperties.2"/>
         <resourceProperties href="../../org.eclipse.lyo.oslc4j.adaptormodel/model/OSLCCoreSpecificationsSet.xmi#//@domainSpecifications.0/@resourceProperties.2"/>
         <resourceProperties href="../../org.eclipse.lyo.oslc4j.adaptormodel/model/OSLCCoreSpecificationsSet.xmi#//@domainSpecifications.0/@resourceProperties.1"/>
+        <resourceProperties href="#//@specification/@domainSpecifications.0/@resourceProperties.18"/>
+        <resourceProperties href="#//@specification/@domainSpecifications.0/@resourceProperties.17"/>
+        <resourceProperties href="#//@specification/@domainSpecifications.0/@resourceProperties.19"/>
+        <resourceProperties href="#//@specification/@domainSpecifications.0/@resourceProperties.16"/>
+        <resourceProperties href="#//@specification/@domainSpecifications.0/@resourceProperties.15"/>
       </resources>
       <resources name="RequirementCollection">
         <resourceProperties href="../../org.eclipse.lyo.oslc4j.adaptormodel/model/OSLCCoreSpecificationsSet.xmi#//@domainSpecifications.2/@resourceProperties.8"/>
@@ -88,6 +88,11 @@
       <resourceProperties name="constrainedBy" occurs="zeroOrMany" valueType="Resource" representation="reference" description="The subject is constrained by the object. For example, a functional requirement is constrained by a safety requirement."/>
       <resourceProperties name="constrains" occurs="zeroOrMany" valueType="Resource" representation="reference" description="The object is constrained by the subject."/>
       <resourceProperties name="uses" occurs="zeroOrMany" valueType="Resource" representation="reference" description="A collection uses a resource - the resource is in the requirement collection."/>
+      <resourceProperties name="derived" occurs="zeroOrMany" valueType="Resource" representation="reference" description="The object is derived from the subject."/>
+      <resourceProperties name="derivedFrom" occurs="zeroOrMany" valueType="Resource" representation="reference" description="The subject is derived from the object"/>
+      <resourceProperties name="tracedTo" occurs="zeroOrMany" valueType="Resource" representation="reference" description="TODO: tracedTo Description"/>
+      <resourceProperties name="verifiedBy" occurs="zeroOrMany" valueType="Resource" representation="reference" description="TODO: verifiedBy Description"/>
+      <resourceProperties name="refinedBy" occurs="zeroOrMany" valueType="Resource" representation="reference" description="TODO: refinedBy Description"/>
     </domainSpecifications>
     <domainPrefixes name="oslc_rm"/>
   </specification>

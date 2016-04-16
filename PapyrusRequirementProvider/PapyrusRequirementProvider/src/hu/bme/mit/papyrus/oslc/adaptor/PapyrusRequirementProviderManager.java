@@ -29,16 +29,16 @@ import java.util.List;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
-import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProvidersFactory;
+import hu.bme.mit.papyrus.oslc.adaptor.util.CSVReader;
 import hu.bme.mit.papyrus.oslc.adaptor.ServiceProviderInfo;
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
-import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 // Start of user code imports
 import java.util.ArrayList;
+import java.io.IOException;
 import java.net.URISyntaxException;
 // End of user code
 
@@ -57,6 +57,12 @@ public class PapyrusRequirementProviderManager {
     {
 		// TODO Implement code to establish connection to data backbone etc ...
 		// Start of user code contextInitializeServletListener
+
+		CSVReader reader = new CSVReader();
+		CSVReader.refreshRequirements();
+		Requirements.init();
+		new Thread(reader).start();
+
 		// End of user code
     }
 
@@ -72,67 +78,27 @@ public class PapyrusRequirementProviderManager {
 		ServiceProviderInfo[] serviceProviderInfos = {};
 		// TODO Implement code to return the set of ServiceProviders
 		// Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
-		
 		final List<ServiceProviderInfo> infos = new ArrayList<ServiceProviderInfo>();
         final ServiceProviderInfo serviceProviderInfo = new ServiceProviderInfo();
-        serviceProviderInfo.name = "Provider";
-        serviceProviderInfo.serviceProviderId = "1";
+        serviceProviderInfo.name = "Requirement Service Provider";
+        serviceProviderInfo.id = "RequirementServiceProvider";
         infos.add(serviceProviderInfo);
         
         serviceProviderInfos = infos.toArray(new ServiceProviderInfo[infos.size()]);
-		
-		
 		// End of user code
 		return serviceProviderInfos;
     }
 
-    public static List<RequirementCollection> queryRequirementCollections(HttpServletRequest httpServletRequest, final String serviceProviderId, String where, int page, int limit)
-    {
-		List<RequirementCollection> resources = null;
-		// TODO Implement code to return a set of resources
-		
-		// Start of user code queryRequirementCollections
-		// End of user code
-		return resources;
-    }
-	public static RequirementCollection createRequirementCollection(HttpServletRequest httpServletRequest, final RequirementCollection aResource, final String serviceProviderId)
-    {
-		RequirementCollection newResource = null;
-		// TODO Implement code to create a resource
-		
-		// Start of user code createRequirementCollection
-		// End of user code
-		return newResource;
-    }
-
-	public static String getETagFromRequirementCollection(final RequirementCollection aResource)
-    {
-		String eTag = null;
-		// TODO Implement code to return an ETag for a particular resource
-		// Start of user code getETagFromRequirementCollection
-		// End of user code
-		return eTag;
-    }
-	public static RequirementCollection getRequirementCollection(HttpServletRequest httpServletRequest, final String serviceProviderId, final String requirementCollectionId)
-    {
-		RequirementCollection aResource = null;
-		// TODO Implement code to return a resource
-		
-		// Start of user code getRequirementCollection
-		// End of user code
-		return aResource;
-    }
-    public static List<Requirement> queryRequirements(HttpServletRequest httpServletRequest, final String serviceProviderId, String where, int page, int limit)
+    public static List<Requirement> queryRequirements(HttpServletRequest httpServletRequest, final String id, String where, int page, int limit)
     {
 		List<Requirement> resources = null;
 		// TODO Implement code to return a set of resources
-		Requirements r = new Requirements();
 		resources = Requirements.getRequirements();
 		// Start of user code queryRequirements
 		// End of user code
 		return resources;
     }
-	public static Requirement createRequirement(HttpServletRequest httpServletRequest, final Requirement aResource, final String serviceProviderId)
+	public static Requirement createRequirement(HttpServletRequest httpServletRequest, final Requirement aResource, final String id)
     {
 		Requirement newResource = null;
 		// TODO Implement code to create a resource
@@ -150,14 +116,18 @@ public class PapyrusRequirementProviderManager {
 		// End of user code
 		return eTag;
     }
-	public static Requirement getRequirement(HttpServletRequest httpServletRequest, final String serviceProviderId, final String requirementId)
+	public static Requirement getRequirement(HttpServletRequest httpServletRequest, final String id, final String requirementId)
     {
 		Requirement aResource = null;
 		// TODO Implement code to return a resource
-		
-		
+		for(Requirement r: Requirements.getRequirements()){
+			if(r.getIdentifier().equals(requirementId)){
+				aResource= r;
+				return aResource;
+			}
+		}
 		// Start of user code getRequirement
 		// End of user code
-		return aResource;
+		return null;
     }
 }
