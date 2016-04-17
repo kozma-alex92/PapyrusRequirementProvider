@@ -60,7 +60,7 @@ public class PapyrusRequirementProviderManager {
 
 		CSVReader reader = new CSVReader();
 		CSVReader.refreshRequirements();
-		Requirements.init();
+		Requirements.initProp();
 		new Thread(reader).start();
 
 		// End of user code

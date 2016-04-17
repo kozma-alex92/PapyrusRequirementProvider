@@ -2221,15 +2221,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = verifiedBy.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!verifiedBy.isEmpty()){
+				for(Link l: verifiedBy){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2255,15 +2253,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = tracedTo.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!tracedTo.isEmpty()){
+				for(Link l: tracedTo){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2289,15 +2285,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = refinedBy.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!refinedBy.isEmpty()){
+				for(Link l: refinedBy){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2323,15 +2317,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = derivedFrom.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!derivedFrom.isEmpty()){
+				for(Link l: derivedFrom){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2357,15 +2349,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = derived.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!derived.isEmpty()){
+				for(Link l: derived){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
