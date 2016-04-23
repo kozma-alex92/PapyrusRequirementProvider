@@ -33,6 +33,7 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 import hu.bme.mit.papyrus.oslc.adaptor.util.CSVReader;
+import hu.bme.mit.papyrus.oslc.adaptor.util.ConfigProperties;
 import hu.bme.mit.papyrus.oslc.adaptor.ServiceProviderInfo;
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
@@ -58,6 +59,7 @@ public class PapyrusRequirementProviderManager {
     {
 		// TODO Implement code to establish connection to data backbone etc ...
 		// Start of user code contextInitializeServletListener
+    	ConfigProperties.initProperties();
 		CSVReader reader = new CSVReader();
 		CSVReader.refreshRequirements();
 		Requirements.init();

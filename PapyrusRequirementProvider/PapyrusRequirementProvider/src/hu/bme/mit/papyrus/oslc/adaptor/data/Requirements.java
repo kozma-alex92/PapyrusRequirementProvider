@@ -77,7 +77,6 @@ public final class Requirements {
 		initReqs();
 		initReqRelationships();
 		initReqCollectionRelationships();
-		print();
 	}
 	
 

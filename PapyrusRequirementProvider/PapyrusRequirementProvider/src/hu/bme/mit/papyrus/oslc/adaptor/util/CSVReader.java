@@ -14,10 +14,7 @@ import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
-import org.openjena.atlas.lib.MultiMap;
 
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 
@@ -36,7 +33,8 @@ public class CSVReader implements Runnable{
 	
 	public void init() throws IOException, InterruptedException {
 		watcher = FileSystems.getDefault().newWatchService();
-		Path dir = Paths.get("C:\\Users\\Y\\Desktop");
+		
+		Path dir = Paths.get(ConfigProperties.getPropertyValue("folder"));
 		try {
 			WatchKey key = dir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
 
@@ -44,7 +42,7 @@ public class CSVReader implements Runnable{
 				final WatchKey wk = watcher.take();
 				for (WatchEvent<?> event : wk.pollEvents()) {
 					final Path changed = (Path) event.context();
-					if (changed.endsWith("table_export.csv")) {
+					if (changed.endsWith(ConfigProperties.getPropertyValue("file"))) {
 						System.out.println("My file has changed");
 						refreshRequirements();
 					}
@@ -83,7 +81,7 @@ public class CSVReader implements Runnable{
 		
 		try {
 			String row;
-			buffer = new BufferedReader(new FileReader("C:\\Users\\Y\\Desktop\\table_export.csv"));
+			buffer = new BufferedReader(new FileReader(ConfigProperties.getPropertyValue("fullpath")));
 			while ((row = buffer.readLine()) != null) {
 				splitRows(row);
 			}
@@ -100,10 +98,7 @@ public class CSVReader implements Runnable{
 		}
 		
 		
-		Requirements.initReqs();
-		System.out.println("Requirements init done");
-		print();
-		System.out.println("Print done");
+		Requirements.init();
 		
 	}
 

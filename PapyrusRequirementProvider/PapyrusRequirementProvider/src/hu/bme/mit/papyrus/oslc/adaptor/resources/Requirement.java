@@ -2362,7 +2362,9 @@ public String toHtml(boolean asLocalResource)
 			if(!satisfiedBy.isEmpty()){
 				for(Link l: satisfiedBy){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
@@ -2914,7 +2916,9 @@ public String toHtml(boolean asLocalResource)
 			if(!verifiedBy.isEmpty()){
 				for(Link l: verifiedBy){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
@@ -2946,7 +2950,9 @@ public String toHtml(boolean asLocalResource)
 			if(!tracedTo.isEmpty()){
 				for(Link l: tracedTo){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
@@ -2978,7 +2984,9 @@ public String toHtml(boolean asLocalResource)
 			if(!refinedBy.isEmpty()){
 				for(Link l: refinedBy){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
@@ -3010,7 +3018,9 @@ public String toHtml(boolean asLocalResource)
 			if(!derivedFrom.isEmpty()){
 				for(Link l: derivedFrom){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
@@ -3042,7 +3052,9 @@ public String toHtml(boolean asLocalResource)
 			if(!derived.isEmpty()){
 				for(Link l: derived){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				

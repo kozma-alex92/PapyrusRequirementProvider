@@ -1681,11 +1681,14 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
+			http://www.w3schools.com/html/">Visit our HTML tutorial</a> 
 			s = s + "<ul>";
 			if(!uses.isEmpty()){
 				for(Link l: uses){
 					s = s + "<li>";
+					s = s+  "<a href="+'"';
 					s = s + l.getValue();
+					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
 				
