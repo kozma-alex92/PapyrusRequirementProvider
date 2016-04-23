@@ -20,7 +20,7 @@
 --%>
 
 <%@page import="org.eclipse.lyo.oslc4j.core.model.ServiceProvider"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.List" %>
 <%@page import="hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement"%>
 <%--
 Start of user code imports
@@ -29,10 +29,10 @@ Start of user code imports
 End of user code 
 --%>
 
-<%@ page contentType="text/html" language="java" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" language="java" pageEncoding="UTF-8" %>
 
 <%
-	Requirement aRequirement = (Requirement) request.getAttribute("aRequirement");
+    Requirement aRequirement = (Requirement) request.getAttribute("aRequirement");
 %>
 <%--
 Start of user code getRequestAttributes
@@ -41,44 +41,7 @@ Start of user code getRequestAttributes
 End of user code
 --%>
 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title><%=aRequirement.toHtml()%></title>
-<%-- 
-Start of user code (RECOMMENDED) headStuff 
-		--%>
-<%-- 
-End of user code 
-		--%>
-</head>
-<body onload="">
-	<div id="header">
-		<div id="banner"></div>
-		<table border="0" cellspacing="0" cellpadding="0" id="titles">
-			<tr>
-				<td id="title">
-					<p>
-						<%=aRequirement.toHtml()%>
-					</p>
-				</td>
-				<td id="information">
-					<p class="header_addl_info">version 0.1</p>
-				</td>
-			</tr>
-		</table>
-	</div>
-
-	<div id="bugzilla-body">
-		<div id="page-index">
-			<%-- 
-Start of user code (RECOMMENDED) bodyStuff1 
-				--%>
-			<%-- 
-End of user code 
-				--%>
-
-			<h1>Resource Presentation</h1>
+<h1>Resource Presentation</h1>
 			<p>
 				Summary:
 				<%=aRequirement.toHtml()%><br />
@@ -190,21 +153,20 @@ End of user code
 					<td><%=aRequirement.instanceShapeToHtml()%></td>
 				</tr>
 			</table>
-		</div>
-	</div>
 
-	<div id="footer">
-		<div class="intro"></div>
-		<div class="outro">
-			<div
-				style="margin: 0 1em 1em 1em; line-height: 1.6em; text-align: left">
-				<b>OSLC Tools Adapter Server 0.1</b> brought to you by <a
-					href="http://eclipse.org/lyo">Eclipse Lyo</a><br />
 			</div>
 		</div>
-	</div>
+		
+		<div id="footer">
+			<div class="intro"></div>
+			<div class="outro">
+				<div style="margin: 0 1em 1em 1em; line-height: 1.6em; text-align: left">
+					<b>OSLC Tools Adapter Server 0.1</b> brought to you by <a href="http://eclipse.org/lyo">Eclipse Lyo</a><br />
+				</div>
+			</div>
+		</div>
+		
 
-
-
-</body>
+		
+	</body>
 </html>

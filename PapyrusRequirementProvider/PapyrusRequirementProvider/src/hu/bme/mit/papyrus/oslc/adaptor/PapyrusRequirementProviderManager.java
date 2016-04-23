@@ -23,7 +23,10 @@
 package hu.bme.mit.papyrus.oslc.adaptor;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.ServletContextEvent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
@@ -34,12 +37,10 @@ import hu.bme.mit.papyrus.oslc.adaptor.ServiceProviderInfo;
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
+import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 // Start of user code imports
-import java.util.ArrayList;
-import java.io.IOException;
-import java.net.URISyntaxException;
 // End of user code
 
 // Start of user code pre_class_code
@@ -57,12 +58,10 @@ public class PapyrusRequirementProviderManager {
     {
 		// TODO Implement code to establish connection to data backbone etc ...
 		// Start of user code contextInitializeServletListener
-
 		CSVReader reader = new CSVReader();
 		CSVReader.refreshRequirements();
-		Requirements.initProp();
+		Requirements.init();
 		new Thread(reader).start();
-
 		// End of user code
     }
 
@@ -81,7 +80,7 @@ public class PapyrusRequirementProviderManager {
 		final List<ServiceProviderInfo> infos = new ArrayList<ServiceProviderInfo>();
         final ServiceProviderInfo serviceProviderInfo = new ServiceProviderInfo();
         serviceProviderInfo.name = "Requirement Service Provider";
-        serviceProviderInfo.id = "RequirementServiceProvider";
+        serviceProviderInfo.id = "Provider";
         infos.add(serviceProviderInfo);
         
         serviceProviderInfos = infos.toArray(new ServiceProviderInfo[infos.size()]);
@@ -93,8 +92,35 @@ public class PapyrusRequirementProviderManager {
     {
 		List<Requirement> resources = null;
 		// TODO Implement code to return a set of resources
-		resources = Requirements.getRequirements();
+		 resources = Requirements.getRequirements();
 		// Start of user code queryRequirements
+		// End of user code
+		return resources;
+    }
+    public static List<RequirementCollection> queryRequirementCollections(HttpServletRequest httpServletRequest, final String id, String where, int page, int limit)
+    {
+		List<RequirementCollection> resources = null;
+		// TODO Implement code to return a set of resources
+		resources = Requirements.getRequirementCollections();
+		// Start of user code queryRequirementCollections
+		// End of user code
+		return resources;
+    }
+	public static List<Requirement> RequirementSelector(HttpServletRequest httpServletRequest, final String id, String terms)   
+    {
+		List<Requirement> resources = null;
+		// TODO Implement code to return a set of resources, based on search criteria 
+		
+		// Start of user code RequirementSelector
+		// End of user code
+		return resources;
+    }
+	public static List<RequirementCollection> RequirementCollectionSelector(HttpServletRequest httpServletRequest, final String id, String terms)   
+    {
+		List<RequirementCollection> resources = null;
+		// TODO Implement code to return a set of resources, based on search criteria 
+		
+		// Start of user code RequirementCollectionSelector
 		// End of user code
 		return resources;
     }
@@ -128,6 +154,20 @@ public class PapyrusRequirementProviderManager {
 		}
 		// Start of user code getRequirement
 		// End of user code
-		return null;
+		return aResource;
+    }
+	public static RequirementCollection getRequirementCollection(HttpServletRequest httpServletRequest, final String id, final String requirementCollectionId)
+    {
+		RequirementCollection aResource = null;
+		// TODO Implement code to return a resource
+		for(RequirementCollection r: Requirements.getRequirementCollections()){
+			if(r.getIdentifier().equals(requirementCollectionId)){
+				aResource= r;
+				return aResource;
+			}
+		}
+		// Start of user code getRequirementCollection
+		// End of user code
+		return aResource;
     }
 }

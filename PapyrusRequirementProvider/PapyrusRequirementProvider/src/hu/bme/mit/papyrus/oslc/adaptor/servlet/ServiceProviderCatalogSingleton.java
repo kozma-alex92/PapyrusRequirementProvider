@@ -281,7 +281,7 @@ public class ServiceProviderCatalogSingleton
 				String identifier = serviceProviderIdentifier(serviceProviderInfo.id);
 		        if (! serviceProviders.containsKey(identifier)) {
 					String serviceProviderName = serviceProviderInfo.name;
-					String title = "Model: " + serviceProviderName + "(" + identifier + ")";
+					String title = "Requirements Service Provider: " + serviceProviderName + "(" + identifier + ")";
 					String description = "The Service Provider for the requirement Services: " + serviceProviderName + "(" + identifier + ")";
 					Publisher publisher = new Publisher("invalid", "invalid");
 		        	Map<String, Object> parameterMap = new HashMap<String, Object>();

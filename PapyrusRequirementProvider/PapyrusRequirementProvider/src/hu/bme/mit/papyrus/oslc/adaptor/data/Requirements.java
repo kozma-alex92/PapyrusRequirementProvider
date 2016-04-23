@@ -3,23 +3,27 @@ package hu.bme.mit.papyrus.oslc.adaptor.data;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.wink.common.internal.providers.entity.csv.CsvReader;
 import org.eclipse.lyo.oslc4j.core.model.Link;
 
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
+import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 import hu.bme.mit.papyrus.oslc.adaptor.util.CSVReader;
 
 public final class Requirements {
 
 	static List<Requirement> requirements = new ArrayList<Requirement>();
+	static List<RequirementCollection> requirementCollections = new ArrayList<RequirementCollection>();
+	static int collectionCount = 0;
 
 	public static void print() {
 
-		for (Requirement r : requirements) {
-			for(Link l:r.getDerived()){
+		for (RequirementCollection r : requirementCollections) {
+			for (Link l : r.getUses()) {
 				System.out.println(l.getValue());
 			}
 		}
@@ -35,107 +39,161 @@ public final class Requirements {
 		return null;
 	}
 
-	public static void initProp() {
+	private static RequirementCollection getRequirementCollectionByName(String name) {
+		for (RequirementCollection r : requirementCollections) {
+			if (r.getTitle().equals(name)) {
+				return r;
+			}
+		}
+		return null;
+	}
+
+	public static void initReqCollections() {
+
+		requirementCollections.clear();
+		collectionCount = 0;
+
+		LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = CSVReader.getProperties();
+
+		RequirementCollection rc;
+
+		for (String s : multiMap.keySet()) {
+
+			try {
+				rc = new RequirementCollection();
+				rc.setTitle(s);
+				rc.setIdentifier(collectionCount++ + "");
+				rc.setAbout(RequirementCollection.constructURI("Provider", rc.getIdentifier()));
+				requirementCollections.add(new RequirementCollection(rc));
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+	}
+	public static void init(){
+		initReqCollections();
+		initReqs();
+		initReqRelationships();
+		initReqCollectionRelationships();
+		print();
+	}
+	
+
+	public static void initReqCollectionRelationships() {
+		LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = CSVReader.getProperties();
+		for (String s : multiMap.keySet()) {
+			for (LinkedHashMap<String, ArrayList<String>> req : multiMap.get(s)) {
+				
+				getRequirementCollectionByName(s)
+						.addUses(new Link(getRequirementByName(req.get("name").get(0)).getAbout()));
+			}
+		}
+
+	}
+
+	public static void initReqs() {
 
 		requirements.clear();
 
-		List<HashMap<String, ArrayList<String>>> multiMap = CSVReader.getProperties();
+		LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = CSVReader.getProperties();
 
-		Requirement temp;
-		try {
+		for (String s : multiMap.keySet()) {
+			Requirement temp;
+			try {
 
-			for (HashMap<String, ArrayList<String>> s : multiMap) {
-				temp = new Requirement();
-				if (s.get("id") != null) {
-					temp.setIdentifier(s.get("id").get(0));
-				}
-				if (s.get("name") != null) {
-					temp.setTitle(s.get("name").get(0));
-				}
-				if (s.get("text") != null) {
-					temp.setDescription(s.get("text").get(0));
+				for (LinkedHashMap<String, ArrayList<String>> req : multiMap.get(s)) {
+					temp = new Requirement();
+					if (req.get("id") != null) {
+						temp.setIdentifier(req.get("id").get(0));
+					}
+					if (req.get("name") != null) {
+						temp.setTitle(req.get("name").get(0));
+					}
+					if (req.get("text") != null) {
+						temp.setDescription(req.get("text").get(0));
+					}
+
+					temp.setAbout(Requirement.constructURI("Provider", temp.getIdentifier()));
+					requirements.add(new Requirement(temp));
+
 				}
 
-				temp.setAbout(Requirement.constructURI("RequirementServiceProvider", temp.getIdentifier()));
-				requirements.add(new Requirement(temp));
-				
+				// derived, derivedFrom, tracedTo,
+				// verifiedBy, refinedBy, satisfiedBy
+
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
-
-			// derived, derivedFrom, tracedTo,
-			// verifiedBy, refinedBy, satisfiedBy
-
-		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
 
-		initRel();
-		print();
 	}
 
-	public static void initRel() {
+	public static void initReqRelationships() {
 
-		List<HashMap<String, ArrayList<String>>> multiMap = CSVReader.getProperties();
-		
-		for (HashMap<String, ArrayList<String>> s : multiMap) {
-			//if the derived key has values in it
-			if (s.keySet().contains("derived")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("derived");
-				for (String derivedName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addDerived(new Link(getRequirementByName(derivedName).getAbout()));
+		LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = CSVReader.getProperties();
+		for (String s : multiMap.keySet()) {
+			for (LinkedHashMap<String, ArrayList<String>> req : multiMap.get(s)) {
+				// if the derived key has values in it
+				if (req.keySet().contains("derived")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("derived");
+					for (String derivedName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addDerived(new Link(getRequirementByName(derivedName).getAbout()));
+					}
 				}
-			}
-			if (s.keySet().contains("derivedFrom")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("derivedFrom");
-				for (String derivedFromName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addDerivedFrom(new Link(getRequirementByName(derivedFromName).getAbout()));
+				if (req.keySet().contains("derivedFrom")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("derivedFrom");
+					for (String derivedFromName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addDerivedFrom(new Link(getRequirementByName(derivedFromName).getAbout()));
+					}
 				}
-			}
-			if (s.keySet().contains("tracedTo")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("tracedTo");
-				for (String tracedToName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addTracedTo(new Link(getRequirementByName(tracedToName).getAbout()));
+				if (req.keySet().contains("tracedTo")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("tracedTo");
+					for (String tracedToName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addTracedTo(new Link(getRequirementByName(tracedToName).getAbout()));
+					}
 				}
-			}
-			if (s.keySet().contains("verifiedBy")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("verifiedBy");
-				for (String verifiedByName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addVerifiedBy(new Link(getRequirementByName(verifiedByName).getAbout()));
+				if (req.keySet().contains("verifiedBy")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("verifiedBy");
+					for (String verifiedByName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addVerifiedBy(new Link(getRequirementByName(verifiedByName).getAbout()));
+					}
 				}
-			}
-			if (s.keySet().contains("refinedBy")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("refinedBy");
-				for (String refinedByName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addRefinedBy(new Link(getRequirementByName(refinedByName).getAbout()));
+				if (req.keySet().contains("refinedBy")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("refinedBy");
+					for (String refinedByName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addRefinedBy(new Link(getRequirementByName(refinedByName).getAbout()));
+					}
 				}
-			}
-			if (s.keySet().contains("satisfiedBy")) {
-				//for the current derived name
-				ArrayList<String> d = s.get("satisfiedBy");
-				for (String satisfiedByName : d) {
-					//get the requirement which has this derived key
-					getRequirementByName(s.get("name").get(0))
-							.addSatisfiedBy(new Link(getRequirementByName(satisfiedByName).getAbout()));
+				if (req.keySet().contains("satisfiedBy")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("satisfiedBy");
+					for (String satisfiedByName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addSatisfiedBy(new Link(getRequirementByName(satisfiedByName).getAbout()));
+					}
 				}
-			}
 
+			}
 		}
-	
 
 	}
 
@@ -143,4 +201,7 @@ public final class Requirements {
 		return requirements;
 	}
 
+	public static List<RequirementCollection> getRequirementCollections() {
+		return requirementCollections;
+	}
 }

@@ -2,6 +2,7 @@ package hu.bme.mit.papyrus.oslc.adaptor.util;
 
 import java.io.BufferedReader;
 
+
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.io.FileReader;
@@ -12,7 +13,7 @@ import java.nio.file.Paths;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,9 @@ public class CSVReader implements Runnable{
 
 	// Reading order: id, name, text, derived, derivedFrom, tracedTo,
 	// verifiedBy, refinedBy, satisfiedBy
-	private static List<HashMap<String, ArrayList<String>>> multiMap = new ArrayList<HashMap<String, ArrayList<String>>>();
+	
+	private static LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = new LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>>();
+	private static String modelName;
 
 	static WatchService watcher;
 
@@ -59,13 +62,19 @@ public class CSVReader implements Runnable{
 	}
 
 	public static void print() {
-		for (HashMap<String, ArrayList<String>> s : multiMap) {
-			System.out.println(s);
+		
+		for(String s: multiMap.keySet()){
+			System.out.println("modelName: "+s+"  : "+multiMap.get(s));
 		}
+
 	}
 
-	public static List<HashMap<String, ArrayList<String>>> getProperties() {
+	public static LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>> getProperties() {
 		return multiMap;
+	}
+	
+	public static String getRequirementCollectionName() {
+		return modelName;
 	}
 
 	public static void refreshRequirements() {
@@ -91,7 +100,7 @@ public class CSVReader implements Runnable{
 		}
 		
 		
-		Requirements.initProp();
+		Requirements.initReqs();
 		System.out.println("Requirements init done");
 		print();
 		System.out.println("Print done");
@@ -100,9 +109,9 @@ public class CSVReader implements Runnable{
 
 	private static void splitRows(String row) {
 
-		HashMap<String, ArrayList<String>> hashMap = new HashMap<String, ArrayList<String>>();
+		LinkedHashMap<String, ArrayList<String>> hashMap = new LinkedHashMap<String, ArrayList<String>>();
 
-		if (row != null) {
+		if (row != null && !row.contains("modelName:")) {
 			String[] splitData = row.split(";");
 			String[] secondSplit;
 
@@ -197,8 +206,13 @@ public class CSVReader implements Runnable{
 				}
 
 			}
+			multiMap.get(modelName).add(hashMap);
 		}
-		multiMap.add(new HashMap<String, ArrayList<String>>(hashMap));
+		else if(row.contains("modelName:")){
+			modelName = row.split(": ")[1];
+			multiMap.put(new String(modelName), new ArrayList<LinkedHashMap<String, ArrayList<String>>>());
+		}
+		
 	}
 
 	@Override

@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <oslc4j_ai:AdaptorInterface xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:oslc4j_ai="http://org.eclipse.lyo/oslc4j/adaptorInterface" name="PapyrusRequirementProvider" javaClassBaseNamespace="hu.bme.mit.papyrus.oslc.adaptor" javaFilesBasePath="/src/" jspFilesBasePath="/WebContent" javascriptFilesBasePath="/WebContent" backendCodeTemplate_getResources="">
   <serviceProviderCatalog title="ServiceProviderCatalogSingleton" description="The Service Provider Catalog">
-    <serviceProviders title="Model" description="The Service Provider for the requirement Services" serviceNamespace="" instanceID="RequirementService{id}">
+    <serviceProviders title="Requirements Service Provider" description="The Service Provider for the requirement Services" serviceNamespace="" instanceID="RequirementService{id}">
       <services domainSpecification="//@specification/@domainSpecifications.0">
-        <creationFactories title="Requirement Creation Factory" label="Requirement_Creation" creationURI="" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
-        <queryCapabilities title="Requirement Query Capability" label="Requirement Query" queryBaseURI="r_query" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
+        <creationFactories title="Requirement Creation Factory" label="ReqCreationFact" creationURI="create" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
+        <queryCapabilities title="Requirement Query" label="ReqQuery" queryBaseURI="requirementQuery" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
+        <queryCapabilities title="RequirementCollection Query" label="ReqCollQuery" queryBaseURI="requirementCollectionQuery" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
+        <selectionDialogs title="Requirement Selection Dialog" label="ReqSelectionDialog" dialogURI="selectionDialogRequirement" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
+        <selectionDialogs title="RequirementCollection Selection Dialog" label="ReqCollSelectionDialog" dialogURI="selectionDialogRequirementCollection" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
+        <creationDialogs title="Requirement Creation Dialog" label="ReqCreationDialog" dialogURI="creationDialogRequirement" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
         <basicCapabilities instanceID="{requirementId}" resourceTypes="//@specification/@domainSpecifications.0/@resources.0"/>
+        <basicCapabilities instanceID="{requirementCollectionId}" resourceTypes="//@specification/@domainSpecifications.0/@resources.1"/>
       </services>
     </serviceProviders>
   </serviceProviderCatalog>
