@@ -19,15 +19,18 @@
 package hu.bme.mit.papyrus.oslc.adaptor.services;
 
 import java.io.IOException;
+
 import java.io.PrintWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -53,6 +56,8 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.core.UriBuilder;
 
+import org.apache.wink.common.internal.model.admin.QueryParameters;
+import org.eclipse.lyo.oslc4j.core.OSLC4JConstants;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcCreationFactory;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDialog;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDialogs;
@@ -63,6 +68,12 @@ import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
 import org.eclipse.lyo.oslc4j.core.model.OslcMediaType;
 import org.eclipse.lyo.oslc4j.core.model.Preview;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
+import org.eclipse.lyo.core.query.ParseException;
+import org.eclipse.lyo.core.query.Properties;
+import org.eclipse.lyo.core.query.PropertiesClause;
+import org.eclipse.lyo.core.query.Property;
+import org.eclipse.lyo.core.query.QueryUtils;
+
 import org.eclipse.lyo.oslc4j.core.model.Link;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 
@@ -137,6 +148,7 @@ public class RequirementService
 		}
         
 		// Start of user code queryRequirements
+		
 		// End of user code
 
         final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id, where, page, limit);
@@ -248,16 +260,17 @@ public class RequirementService
     @Path("{requirementId}")
     @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
     public Requirement getRequirement(
-                @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
+                @PathParam("id") final String id, @PathParam("requirementId") final String requirementId, @QueryParam("oslc.properties") final String properties
         ) throws IOException, ServletException, URISyntaxException
     {
 		// Start of user code getResource_init
+    	System.out.println(properties);
 		// End of user code
-
-        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
-
+    	final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
+        
         if (aRequirement != null) {
 			// Start of user code getRequirement
+
 			// End of user code
             return aRequirement;
         }
@@ -274,21 +287,28 @@ public class RequirementService
      * @throws ServletException
      * @throws IOException
      * @throws URISyntaxException
+     * @throws ParseException 
      */
 	@GET
     @Path("{requirementId}")
 	@Produces({ MediaType.TEXT_HTML })
 	public Response getRequirementAsHtml(
-        @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
+        @PathParam("id") final String id, @PathParam("requirementId") final String requirementId, @QueryParam("oslc.properties") final String properties,
+        @QueryParam("oslc.prefix") final String prefix
         ) throws ServletException, IOException, URISyntaxException
 	{	
+        
+
 		// Start of user code getRequirementAsHtml_init
+
 		// End of user code
 
         final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
-
         if (aRequirement != null) {
+        	
+        	
         	httpServletRequest.setAttribute("aRequirement", aRequirement);
+        	
 			// Start of user code getRequirementAsHtml_setAttributes
 			// End of user code
 

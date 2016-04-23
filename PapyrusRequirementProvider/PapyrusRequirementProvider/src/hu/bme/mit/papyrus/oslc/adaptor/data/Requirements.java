@@ -43,9 +43,9 @@ public final class Requirements {
 
 		Requirement temp;
 		try {
-			temp = new Requirement();
 
 			for (HashMap<String, ArrayList<String>> s : multiMap) {
+				temp = new Requirement();
 				if (s.get("id") != null) {
 					temp.setIdentifier(s.get("id").get(0));
 				}
@@ -58,6 +58,7 @@ public final class Requirements {
 
 				temp.setAbout(Requirement.constructURI("RequirementServiceProvider", temp.getIdentifier()));
 				requirements.add(new Requirement(temp));
+				
 			}
 
 			// derived, derivedFrom, tracedTo,

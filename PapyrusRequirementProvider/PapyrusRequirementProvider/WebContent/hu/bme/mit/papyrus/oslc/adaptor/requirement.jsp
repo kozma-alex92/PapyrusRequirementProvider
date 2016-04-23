@@ -119,7 +119,10 @@ End of user code
 				</tr>
 
 			</table>
+			<br>
+			<h3>Requirements Management Specification Version 2.0 properties</h3>
 			<table style="clear: both;" border="1">
+				<br>
 				<tr>
 					<td><%=aRequirement.elaboratedByToHtml()%></td>
 				</tr>

@@ -22,5 +22,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/Y/Desktop/org.eclipse.lyo.oslc4j-2.1.0/dist/oslc-query-2.1.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

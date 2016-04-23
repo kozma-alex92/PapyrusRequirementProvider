@@ -49,7 +49,7 @@ public class CSVReader implements Runnable{
 				// reset the key
 				boolean valid = wk.reset();
 				if (!valid) {
-					System.out.println("Key has been unregisterede");
+					System.out.println("Key has been unregistered");
 				}
 			}
 

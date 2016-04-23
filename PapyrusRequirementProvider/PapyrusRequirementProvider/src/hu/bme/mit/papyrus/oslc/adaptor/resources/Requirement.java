@@ -1680,15 +1680,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = satisfiedBy.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if(!satisfiedBy.isEmpty()){
+				for(Link l: satisfiedBy){
+					s = s + "<li>";
+					s = s + l.getValue();
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
