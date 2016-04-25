@@ -70,6 +70,7 @@ import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
 import org.eclipse.lyo.oslc4j.core.model.Representation;
 import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
+import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServletListener;
 import hu.bme.mit.papyrus.oslc.adaptor.util.WhereParam;
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderConstants;
@@ -119,15 +120,19 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 	public Requirement() throws URISyntaxException {
 		super();
-
 		// Start of user code constructor1
+		this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+		this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+				+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		// End of user code
 	}
 
 	public Requirement(final URI about) throws URISyntaxException {
 		super(about);
-
 		// Start of user code constructor2
+		this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+		this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+				+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		// End of user code
 	}
 
@@ -256,6 +261,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
+			this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+			this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+					+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		} catch (NoSuchMethodException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -269,6 +277,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -294,6 +305,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
+			this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+			this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+					+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		} catch (NoSuchMethodException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -307,6 +321,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -327,6 +344,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
+			this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+			this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+					+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		} catch (NoSuchMethodException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -340,6 +360,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -385,12 +408,18 @@ public class Requirement extends AbstractResource implements IRequirement {
 		if (getAbout() == null || getAbout().toString().isEmpty()) {
 			this.setAbout(constructURI("Provider", getIdentifier()));
 		}
+		this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+		this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+				+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		// End of user code
 	}
 
 	public Requirement(final String id, final String requirementId) throws URISyntaxException {
 		this(constructURI(id, requirementId));
 		// Start of user code constructor3
+		this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+		this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+				+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT)));
 		// End of user code
 	}
 
@@ -3291,7 +3320,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			if (serviceProvider == null) {
 				s = s + "<em>null</em>";
 			} else {
+				s = s + "<a href=" + '"';
 				s = s + serviceProvider.toString();
+				s = s + '"' + ">" + serviceProvider.toString() + "</a>";
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -3318,7 +3349,9 @@ public class Requirement extends AbstractResource implements IRequirement {
 			if (instanceShape.getValue() == null) {
 				s = s + "<em>null</em>";
 			} else {
+				s = s + "<a href=" + '"';
 				s = s + instanceShape.getValue().toString();
+				s = s + '"' + ">" + instanceShape.getValue().toString() + "</a>";
 			}
 
 		} catch (Exception e) {

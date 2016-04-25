@@ -64,6 +64,7 @@ import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
 import org.eclipse.lyo.oslc4j.core.model.Representation;
 import org.eclipse.lyo.oslc4j.core.model.ValueType;
 
+import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServletListener; 
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderConstants;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;	
@@ -115,6 +116,9 @@ public RequirementCollection()
     super();
 
 	// Start of user code constructor1
+	this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+	this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+			+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION)));
 	// End of user code
 }
 
@@ -124,6 +128,9 @@ public RequirementCollection(final URI about)
     super(about);
 
 	// Start of user code constructor2
+	this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+	this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+			+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION)));
 	// End of user code
 }
 
@@ -134,7 +141,9 @@ public RequirementCollection(RequirementCollection r) throws URISyntaxException 
 	setIdentifier(r.getIdentifier());
 	setTitle(r.getTitle());
 	setAbout(r.getAbout());
-
+	this.setServiceProvider(ServiceProviderCatalogSingleton.getServiceProviders(null)[0].getAbout());
+	this.setInstanceShape(new Link(new URI(ServletListener.getServicesBase()+"/"+OslcConstants.PATH_RESOURCE_SHAPES
+			+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION)));
 	// End of user code
 }
 
@@ -1322,8 +1331,699 @@ public String toHtml(boolean asLocalResource)
     }
 
 
-    public String titleToHtml()
-    {
+	public String elaboratedByToHtml() {
+		String s = "";
+
+		// Start of user code elaboratedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"elaboratedBy\"><strong>elaboratedBy</strong>: </LABEL>";
+
+		// Start of user code elaboratedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = elaboratedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!elaboratedBy.isEmpty()) {
+				for (Link l : elaboratedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code elaboratedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String elaboratesToHtml() {
+		String s = "";
+
+		// Start of user code elaboratestoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"elaborates\"><strong>elaborates</strong>: </LABEL>";
+
+		// Start of user code elaboratestoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = elaborates.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!elaborates.isEmpty()) {
+				for (Link l : elaborates) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code elaboratestoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String specifiedByToHtml() {
+		String s = "";
+
+		// Start of user code specifiedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"specifiedBy\"><strong>specifiedBy</strong>: </LABEL>";
+
+		// Start of user code specifiedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = specifiedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!specifiedBy.isEmpty()) {
+				for (Link l : specifiedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code specifiedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String specifiesToHtml() {
+		String s = "";
+
+		// Start of user code specifiestoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"specifies\"><strong>specifies</strong>: </LABEL>";
+
+		// Start of user code specifiestoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = specifies.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!specifies.isEmpty()) {
+				for (Link l : specifies) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		// Start of user code specifiestoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String affectedByToHtml() {
+		String s = "";
+
+		// Start of user code affectedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"affectedBy\"><strong>affectedBy</strong>: </LABEL>";
+
+		// Start of user code affectedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = affectedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!affectedBy.isEmpty()) {
+				for (Link l : affectedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		// Start of user code affectedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String trackedByToHtml() {
+		String s = "";
+
+		// Start of user code trackedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"trackedBy\"><strong>trackedBy</strong>: </LABEL>";
+
+		// Start of user code trackedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = trackedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!trackedBy.isEmpty()) {
+				for (Link l : trackedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code trackedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String implementedByToHtml() {
+		String s = "";
+
+		// Start of user code implementedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"implementedBy\"><strong>implementedBy</strong>: </LABEL>";
+
+		// Start of user code implementedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = implementedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!implementedBy.isEmpty()) {
+				for (Link l : implementedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code implementedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String validatedByToHtml() {
+		String s = "";
+
+		// Start of user code validatedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"validatedBy\"><strong>validatedBy</strong>: </LABEL>";
+
+		// Start of user code validatedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = validatedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!validatedBy.isEmpty()) {
+				for (Link l : validatedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code validatedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String satisfiedByToHtml() {
+		String s = "";
+
+		// Start of user code satisfiedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"satisfiedBy\"><strong>satisfiedBy</strong>: </LABEL>";
+
+		// Start of user code satisfiedBytoHtml_mid
+		// End of user code
+
+		try {
+			s = s + "<ul>";
+			if (!satisfiedBy.isEmpty()) {
+				for (Link l : satisfiedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+
+		// Start of user code satisfiedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String satisfiesToHtml() {
+		String s = "";
+
+		// Start of user code satisfiestoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"satisfies\"><strong>satisfies</strong>: </LABEL>";
+
+		// Start of user code satisfiestoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = satisfies.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+
+		
+		try {
+			s = s + "<ul>";
+			if (!satisfies.isEmpty()) {
+				for (Link l : satisfies) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		// Start of user code satisfiestoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String decomposedByToHtml() {
+		String s = "";
+
+		// Start of user code decomposedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"decomposedBy\"><strong>decomposedBy</strong>: </LABEL>";
+
+		// Start of user code decomposedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = decomposedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!decomposedBy.isEmpty()) {
+				for (Link l : decomposedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code decomposedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String decomposesToHtml() {
+		String s = "";
+
+		// Start of user code decomposestoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"decomposes\"><strong>decomposes</strong>: </LABEL>";
+
+		// Start of user code decomposestoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = decomposes.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!decomposes.isEmpty()) {
+				for (Link l : decomposes) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code decomposestoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String constrainedByToHtml() {
+		String s = "";
+
+		// Start of user code constrainedBytoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"constrainedBy\"><strong>constrainedBy</strong>: </LABEL>";
+
+		// Start of user code constrainedBytoHtml_mid
+		// End of user code
+
+/*		try {
+			s = s + "<ul>";
+			Iterator<Link> itr = constrainedBy.iterator();
+			while (itr.hasNext()) {
+				s = s + "<li>";
+				if (itr.next().getValue() == null) {
+					s = s + "<em>null</em>";
+				} else {
+					s = s + itr.next().getValue().toString();
+				}
+				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!constrainedBy.isEmpty()) {
+				for (Link l : constrainedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code constrainedBytoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String constrainsToHtml() {
+		String s = "";
+
+		// Start of user code constrainstoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"constrains\"><strong>constrains</strong>: </LABEL>";
+
+		// Start of user code constrainstoHtml_mid
+		// End of user code
+
+		/*
+		 * try { s = s + "<ul>"; Iterator<Link> itr = constrains.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; if (itr.next().getValue() ==
+		 * null) { s = s + "<em>null</em>"; } else { s = s +
+		 * itr.next().getValue().toString(); } s = s + "</li>"; } s = s +
+		 * "</ul>"; } catch (Exception e) { e.printStackTrace(); }
+		 */
+
+		try {
+			s = s + "<ul>";
+			if (!constrains.isEmpty()) {
+				for (Link l : constrains) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code constrainstoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+
+	public String titleToHtml() {
 		String s = "";
 
 		// Start of user code titletoHtml_init
@@ -1335,23 +2035,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (title == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + title.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (title == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + title.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code titletoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String descriptionToHtml()
-    {
+		return s;
+	}
+
+	public String descriptionToHtml() {
 		String s = "";
 
 		// Start of user code descriptiontoHtml_init
@@ -1363,23 +2062,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (description == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + description.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (description == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + description.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code descriptiontoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String identifierToHtml()
-    {
+		return s;
+	}
+
+	public String identifierToHtml() {
 		String s = "";
 
 		// Start of user code identifiertoHtml_init
@@ -1391,23 +2089,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (identifier == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + identifier.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (identifier == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + identifier.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code identifiertoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String shortTitleToHtml()
-    {
+		return s;
+	}
+
+	public String shortTitleToHtml() {
 		String s = "";
 
 		// Start of user code shortTitletoHtml_init
@@ -1419,23 +2116,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (shortTitle == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + shortTitle.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (shortTitle == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + shortTitle.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code shortTitletoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String subjectToHtml()
-    {
+		return s;
+	}
+
+	public String subjectToHtml() {
 		String s = "";
 
 		// Start of user code subjecttoHtml_init
@@ -1446,26 +2142,37 @@ public String toHtml(boolean asLocalResource)
 		// Start of user code subjecttoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<String> itr = subject.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toString(); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
-		        s = s + "<ul>";
-				Iterator<String> itr = subject.iterator();
-				while(itr.hasNext()) {
+			s = s + "<ul>";
+			if (!subject.isEmpty()) {
+				for (String p : subject) {
 					s = s + "<li>";
-					s= s + itr.next().toString();
+					s = s + "<a href=" + '"';
+					s = s + p;
+					s = s + '"' + ">" + p + "</a>";
 					s = s + "</li>";
 				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code subjecttoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String creatorToHtml()
-    {
+		return s;
+	}
+
+	public String creatorToHtml() {
 		String s = "";
 
 		// Start of user code creatortoHtml_init
@@ -1476,26 +2183,35 @@ public String toHtml(boolean asLocalResource)
 		// Start of user code creatortoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<Person> itr = creator.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toHtml(true); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
-		        s = s + "<ul>";
-				Iterator<Person> itr = creator.iterator();
-				while(itr.hasNext()) {
+			s = s + "<ul>";
+			if (!creator.isEmpty()) {
+				for (Person p : creator) {
 					s = s + "<li>";
-						s = s + itr.next().toHtml(true);
+					s = s + p.toHtml();
 					s = s + "</li>";
 				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code creatortoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String contributorToHtml()
-    {
+		return s;
+	}
+
+	public String contributorToHtml() {
 		String s = "";
 
 		// Start of user code contributortoHtml_init
@@ -1506,26 +2222,35 @@ public String toHtml(boolean asLocalResource)
 		// Start of user code contributortoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<Person> itr = contributor.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toHtml(true); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
-		        s = s + "<ul>";
-				Iterator<Person> itr = contributor.iterator();
-				while(itr.hasNext()) {
+			s = s + "<ul>";
+			if (!contributor.isEmpty()) {
+				for (Person p : contributor) {
 					s = s + "<li>";
-						s = s + itr.next().toHtml(true);
+					s = s + p.toHtml();
 					s = s + "</li>";
 				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code contributortoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String createdToHtml()
-    {
+		return s;
+	}
+
+	public String createdToHtml() {
 		String s = "";
 
 		// Start of user code createdtoHtml_init
@@ -1537,23 +2262,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (created == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + created.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (created == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + created.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code createdtoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String modifiedToHtml()
-    {
+		return s;
+	}
+
+	public String modifiedToHtml() {
 		String s = "";
 
 		// Start of user code modifiedtoHtml_init
@@ -1565,23 +2289,22 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (modified == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + modified.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (modified == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + modified.toString();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code modifiedtoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String typeToHtml()
-    {
+		return s;
+	}
+
+	public String typeToHtml() {
 		String s = "";
 
 		// Start of user code typetoHtml_init
@@ -1593,25 +2316,27 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-		        s = s + "<ul>";
-				Iterator<Type> itr = type.iterator();
-				while(itr.hasNext()) {
+			s = s + "<ul>";
+			if (!type.isEmpty()) {
+				for (Type t : type) {
 					s = s + "<li>";
-						s = s + itr.next().toHtml(true);
+					s = s + t.toHtml();
 					s = s + "</li>";
 				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code typetoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String serviceProviderToHtml()
-    {
+		return s;
+	}
+
+	public String serviceProviderToHtml() {
 		String s = "";
 
 		// Start of user code serviceProvidertoHtml_init
@@ -1623,23 +2348,24 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-				if (serviceProvider == null) {
-					s= s + "<em>null</em>";				
-				}
-				else {
-					s= s + serviceProvider.toString();				
-				}
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+			if (serviceProvider == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + "<a href=" + '"';
+				s = s + serviceProvider.toString();
+				s = s + '"' + ">" + serviceProvider.toString() + "</a>";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code serviceProvidertoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String instanceShapeToHtml()
-    {
+		return s;
+	}
+
+	public String instanceShapeToHtml() {
 		String s = "";
 
 		// Start of user code instanceShapetoHtml_init
@@ -1651,24 +2377,25 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-                    if (instanceShape.getValue() == null) {
-                        s = s + "<em>null</em>";             
-                    }
-                    else {
-                        s = s + instanceShape.getValue().toString();                
-                    }
+			if (instanceShape.getValue() == null) {
+				s = s + "<em>null</em>";
+			} else {
+				s = s + "<a href=" + '"';
+				s = s + instanceShape.getValue().toString();
+				s = s + '"' + ">" + instanceShape.getValue().toString() + "</a>";
+			}
 
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// Start of user code instanceShapetoHtml_finalize
 		// End of user code
 
-		return s; 
-    }
-    public String usesToHtml()
+		return s;
+	}
+
+	public String usesToHtml()
     {
 		String s = "";
 
@@ -1681,7 +2408,6 @@ public String toHtml(boolean asLocalResource)
 		// End of user code
 
 		try {
-			http://www.w3schools.com/html/">Visit our HTML tutorial</a> 
 			s = s + "<ul>";
 			if(!uses.isEmpty()){
 				for(Link l: uses){
@@ -1699,496 +2425,6 @@ public String toHtml(boolean asLocalResource)
 		}
 
 		// Start of user code usestoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String elaboratedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code elaboratedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"elaboratedBy\"><strong>elaboratedBy</strong>: </LABEL>";
-
-		// Start of user code elaboratedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = elaboratedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code elaboratedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String elaboratesToHtml()
-    {
-		String s = "";
-
-		// Start of user code elaboratestoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"elaborates\"><strong>elaborates</strong>: </LABEL>";
-
-		// Start of user code elaboratestoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = elaborates.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code elaboratestoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String specifiedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code specifiedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"specifiedBy\"><strong>specifiedBy</strong>: </LABEL>";
-
-		// Start of user code specifiedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = specifiedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code specifiedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String specifiesToHtml()
-    {
-		String s = "";
-
-		// Start of user code specifiestoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"specifies\"><strong>specifies</strong>: </LABEL>";
-
-		// Start of user code specifiestoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = specifies.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code specifiestoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String affectedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code affectedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"affectedBy\"><strong>affectedBy</strong>: </LABEL>";
-
-		// Start of user code affectedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = affectedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code affectedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String trackedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code trackedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"trackedBy\"><strong>trackedBy</strong>: </LABEL>";
-
-		// Start of user code trackedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = trackedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code trackedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String implementedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code implementedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"implementedBy\"><strong>implementedBy</strong>: </LABEL>";
-
-		// Start of user code implementedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = implementedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code implementedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String validatedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code validatedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"validatedBy\"><strong>validatedBy</strong>: </LABEL>";
-
-		// Start of user code validatedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = validatedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code validatedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String satisfiedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code satisfiedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"satisfiedBy\"><strong>satisfiedBy</strong>: </LABEL>";
-
-		// Start of user code satisfiedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = satisfiedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code satisfiedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String satisfiesToHtml()
-    {
-		String s = "";
-
-		// Start of user code satisfiestoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"satisfies\"><strong>satisfies</strong>: </LABEL>";
-
-		// Start of user code satisfiestoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = satisfies.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code satisfiestoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String decomposedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code decomposedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"decomposedBy\"><strong>decomposedBy</strong>: </LABEL>";
-
-		// Start of user code decomposedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = decomposedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code decomposedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String decomposesToHtml()
-    {
-		String s = "";
-
-		// Start of user code decomposestoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"decomposes\"><strong>decomposes</strong>: </LABEL>";
-
-		// Start of user code decomposestoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = decomposes.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code decomposestoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String constrainedByToHtml()
-    {
-		String s = "";
-
-		// Start of user code constrainedBytoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"constrainedBy\"><strong>constrainedBy</strong>: </LABEL>";
-
-		// Start of user code constrainedBytoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = constrainedBy.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code constrainedBytoHtml_finalize
-		// End of user code
-
-		return s; 
-    }
-    public String constrainsToHtml()
-    {
-		String s = "";
-
-		// Start of user code constrainstoHtml_init
-		// End of user code
-
-		s = s + "<label for=\"constrains\"><strong>constrains</strong>: </LABEL>";
-
-		// Start of user code constrainstoHtml_mid
-		// End of user code
-
-		try {
-		        s = s + "<ul>";
-				Iterator<Link> itr = constrains.iterator();
-				while(itr.hasNext()) {
-					s = s + "<li>";
-                            if (itr.next().getValue() == null) {
-                                s= s + "<em>null</em>";             
-                            }
-                            else {
-                                s = s + itr.next().getValue().toString();
-                            }
-					s = s + "</li>";
-				}
-		        s = s + "</ul>";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	    }
-
-		// Start of user code constrainstoHtml_finalize
 		// End of user code
 
 		return s; 

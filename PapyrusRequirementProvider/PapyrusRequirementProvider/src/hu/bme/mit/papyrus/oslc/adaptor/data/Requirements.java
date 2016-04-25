@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.wink.common.internal.providers.entity.csv.CsvReader;
 import org.eclipse.lyo.oslc4j.core.model.Link;
+import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
@@ -21,15 +22,6 @@ public final class Requirements {
 	static List<RequirementCollection> requirementCollections = new ArrayList<RequirementCollection>();
 	static int collectionCount = 0;
 
-	public static void print() {
-
-		for (RequirementCollection r : requirementCollections) {
-			for (Link l : r.getUses()) {
-				System.out.println(l.getValue());
-			}
-		}
-
-	}
 
 	private static Requirement getRequirementByName(String name) {
 		for (Requirement r : requirements) {
