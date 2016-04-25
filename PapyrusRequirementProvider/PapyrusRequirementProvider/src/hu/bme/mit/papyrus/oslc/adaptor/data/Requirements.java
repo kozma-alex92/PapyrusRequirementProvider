@@ -199,7 +199,7 @@ public final class Requirements {
 
 	public static Requirement getRequirementByAbout(URI about) {
 		for (Requirement r : requirements) {
-			if (r.getAbout()==about) {
+			if (r.getAbout().toString().equals(about.toString())) {
 				return r;
 			}
 		}

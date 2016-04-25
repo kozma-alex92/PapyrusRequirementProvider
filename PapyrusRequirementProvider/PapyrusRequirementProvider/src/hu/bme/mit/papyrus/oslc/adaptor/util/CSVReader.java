@@ -34,7 +34,7 @@ public class CSVReader implements Runnable{
 	public void init() throws IOException, InterruptedException {
 		watcher = FileSystems.getDefault().newWatchService();
 		
-		Path dir = Paths.get(ConfigProperties.getPropertyValue("folder"));
+		Path dir = Paths.get(ConfigProperties.getPropertyValue("input_folder"));
 		try {
 			WatchKey key = dir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
 
@@ -42,8 +42,7 @@ public class CSVReader implements Runnable{
 				final WatchKey wk = watcher.take();
 				for (WatchEvent<?> event : wk.pollEvents()) {
 					final Path changed = (Path) event.context();
-					if (changed.endsWith(ConfigProperties.getPropertyValue("file"))) {
-						System.out.println("My file has changed");
+					if (changed.endsWith(ConfigProperties.getPropertyValue("input_file"))) {
 						refreshRequirements();
 					}
 				}
@@ -81,7 +80,7 @@ public class CSVReader implements Runnable{
 		
 		try {
 			String row;
-			buffer = new BufferedReader(new FileReader(ConfigProperties.getPropertyValue("fullpath")));
+			buffer = new BufferedReader(new FileReader(ConfigProperties.getPropertyValue("input_fullpath")));
 			while ((row = buffer.readLine()) != null) {
 				splitRows(row);
 			}

@@ -255,7 +255,85 @@ public class Requirement extends AbstractResource implements IRequirement {
 				setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
 				setMethod.invoke(this, paramPropertyValue);
 			}
-
+			if(getAbout()==null || getAbout().toString().isEmpty()){
+				this.setAbout(constructURI("Provider", getIdentifier()));
+			}
+		} catch (NoSuchMethodException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public Requirement(Requirement r, ArrayList<String> properties, ArrayList<String> usedProperties){
+		super();
+		setAbout(r.getAbout());
+		Method getMethod;
+		Method setMethod;
+		try {
+			for (String s : properties) {
+				String methodName = "get" + s.substring(0, 1).toUpperCase()
+						+ s.substring(1);
+				getMethod = r.getClass().getDeclaredMethod(methodName);
+				Object paramPropertyValue;
+				paramPropertyValue = getMethod.invoke(r);
+				if(usedProperties.contains(s)){
+					methodName = "set" + s.substring(0, 1).toUpperCase()
+							+ s.substring(1);
+					setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
+					setMethod.invoke(this, paramPropertyValue);
+				}
+			}
+			if(getAbout()==null || getAbout().toString().isEmpty()){
+				this.setAbout(constructURI("Provider", getIdentifier()));
+			}
+		} catch (NoSuchMethodException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SecurityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public Requirement(Map<String, String> properties){
+		super();
+		Method getMethod;
+		Method setMethod;
+		try {
+			for (String s : properties.keySet()) {
+				String methodName = "get" + s.substring(0, 1).toUpperCase()
+						+ s.substring(1);
+				getMethod = this.getClass().getDeclaredMethod(methodName);
+				methodName = "set" + s.substring(0, 1).toUpperCase()
+						+ s.substring(1);
+				setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
+				setMethod.invoke(this, properties.get(s));
+			}
+			if(getAbout()==null || getAbout().toString().isEmpty()){
+				this.setAbout(constructURI("Provider", getIdentifier()));
+			}
 		} catch (NoSuchMethodException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -282,7 +360,38 @@ public class Requirement extends AbstractResource implements IRequirement {
 		setTitle(r.getTitle());
 		setDescription(r.getDescription());
 		setAbout(r.getAbout());
-
+		setAffectedBy(r.getAffectedBy());
+		setConstrainedBy(r.getConstrainedBy());
+		setConstrains(r.getConstrains());
+		setContributor(r.getContributor());
+		setCreated(r.getCreated());
+		setCreator(r.getCreator());
+		setDecomposedBy(r.getDecomposedBy());
+		setDerived(r.getDerived());
+		setDerivedFrom(r.getDerivedFrom());
+		setElaboratedBy(r.getElaboratedBy());
+		setElaborates(r.getElaborates());
+		setImplementedBy(r.getImplementedBy());
+		setInstanceShape(r.getInstanceShape());
+		setModified(r.getModified());
+		setRefinedBy(r.getRefinedBy());
+		setSatisfiedBy(r.getSatisfiedBy());
+		setSatisfies(r.getSatisfies());
+		setServiceProvider(r.getServiceProvider());
+		setSpecifiedBy(r.getSpecifiedBy());
+		setShortTitle(r.getShortTitle());
+		setSpecifies(r.getSpecifies());
+		setSubject(r.getSubject());
+		setTracedTo(r.getTracedTo());
+		setTrackedBy(r.getTrackedBy());
+		setType(r.getType());
+		setTypes(r.getTypes());
+		setValidatedBy(r.getValidatedBy());
+		setVerifiedBy(r.getVerifiedBy());
+		
+		if(getAbout()==null || getAbout().toString().isEmpty()){
+			this.setAbout(constructURI("Provider", getIdentifier()));
+		}
 		// End of user code
 	}
 
@@ -1038,7 +1147,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:elaboratedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
-
+		s = s + "<input name=\"elaboratedBy\" type=\"text\" style=\"width: 400px\" id=\"elaboratedBy\" >";
 		// Start of user code "Finalize:elaboratedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1075,7 +1184,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:elaboratesToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"elaborates\" type=\"text\" style=\"width: 400px\" id=\"elaborates\" >";
 		// Start of user code "Finalize:elaboratesToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1112,7 +1221,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:specifiedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"specifiedBy\" type=\"text\" style=\"width: 400px\" id=\"specifiedBy\" >";
 		// Start of user code "Finalize:specifiedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1149,7 +1258,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:specifiesToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"specifies\" type=\"text\" style=\"width: 400px\" id=\"specifies\" >";
 		// Start of user code "Finalize:specifiesToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1186,7 +1295,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:affectedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"affectedBy\" type=\"text\" style=\"width: 400px\" id=\"affectedBy\" >";
 		// Start of user code "Finalize:affectedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1223,7 +1332,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:trackedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"trackedBy\" type=\"text\" style=\"width: 400px\" id=\"trackedBy\" >";
 		// Start of user code "Finalize:trackedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1260,7 +1369,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:implementedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
-
+		s = s + "<input name=\"implementedBy\" type=\"text\" style=\"width: 400px\" id=\"implementedBy\" >";
 		// Start of user code "Finalize:implementedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1297,7 +1406,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:validatedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"validatedBy\" type=\"text\" style=\"width: 400px\" id=\"validatedBy\" >";
 		// Start of user code "Finalize:validatedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1334,7 +1443,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:satisfiedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"satisfiedBy\" type=\"text\" style=\"width: 400px\" id=\"satisfiedBy\" >";
 		// Start of user code "Finalize:satisfiedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1371,7 +1480,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:satisfiesToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"satisfies\" type=\"text\" style=\"width: 400px\" id=\"satisfies\" >";
 		// Start of user code "Finalize:satisfiesToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1408,7 +1517,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:decomposedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
-
+		s = s + "<input name=\"decomposedBy\" type=\"text\" style=\"width: 400px\" id=\"decomposedBy\" >";
 		// Start of user code "Finalize:decomposedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1445,7 +1554,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:decomposesToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"decomposes\" type=\"text\" style=\"width: 400px\" id=\"decomposes\" >";
 		// Start of user code "Finalize:decomposesToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1482,7 +1591,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:constrainedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
-
+		s = s + "<input name=\"constrainedBy\" type=\"text\" style=\"width: 400px\" id=\"constrainedBy\" >";
 		// Start of user code "Finalize:constrainedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1519,7 +1628,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:constrainsToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"constrains\" type=\"text\" style=\"width: 400px\" id=\"constrains\" >";
 		// Start of user code "Finalize:constrainsToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1749,7 +1858,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:creatorToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"creator\" type=\"text\" style=\"width: 400px\" id=\"creator\" >";
 		// Start of user code "Finalize:creatorToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1786,7 +1895,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:contributorToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"contributor\" type=\"text\" style=\"width: 400px\" id=\"contributor\" >";
 		// Start of user code "Finalize:contributorToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -1899,7 +2008,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		// Start of user code "Mid:typeToHtmlForCreation1(...final String id)"
 		// End of user code
-
+		s = s + "<input name=\"type\" type=\"text\" style=\"width: 400px\" id=\"type\" >";
 		// Start of user code "Finalize:typeToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
@@ -1976,7 +2085,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:instanceShapeToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
-
+		s = s + "<input name=\"instanceShape\" type=\"text\" style=\"width: 400px\" id=\"instanceShape\" >";
 		// Start of user code "Finalize:instanceShapeToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -2013,7 +2122,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:verifiedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"verifiedBy\" type=\"text\" style=\"width: 400px\" id=\"verifiedBy\" >";
 		// Start of user code "Finalize:verifiedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -2050,7 +2159,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:tracedToToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"tracedTo\" type=\"text\" style=\"width: 400px\" id=\"tracedTo\" >";
 		// Start of user code "Finalize:tracedToToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -2087,7 +2196,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:refinedByToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"refinedBy\" type=\"text\" style=\"width: 400px\" id=\"refinedBy\" >";
 		// Start of user code "Finalize:refinedByToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -2124,7 +2233,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:derivedFromToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"derivedFrom\" type=\"text\" style=\"width: 400px\" id=\"derivedFrom\" >";
 		// Start of user code "Finalize:derivedFromToHtmlForCreation1(...final
 		// String id)"
 		// End of user code
@@ -2161,7 +2270,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code "Mid:derivedToHtmlForCreation1(...final String
 		// id)"
 		// End of user code
-
+		s = s + "<input name=\"derived\" type=\"text\" style=\"width: 400px\" id=\"derived\" >";
 		// Start of user code "Finalize:derivedToHtmlForCreation1(...final
 		// String id)"
 		// End of user code

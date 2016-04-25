@@ -25,9 +25,14 @@ package hu.bme.mit.papyrus.oslc.adaptor;
 import javax.servlet.http.HttpServletRequest;
 
 
+
 import javax.servlet.ServletContextEvent;
 
+import java.lang.reflect.Field;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
@@ -44,6 +49,7 @@ import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
+import hu.bme.mit.papyrus.oslc.adaptor.util.CSVWriter;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 // Start of user code imports
@@ -160,7 +166,38 @@ public class PapyrusRequirementProviderManager {
 			final String id) {
 		Requirement newResource = null;
 		// TODO Implement code to create a resource
+		
+		LinkedHashMap<String, String> keyValues = new LinkedHashMap<String, String>();
+		
+		ArrayList<String> usedProperties = new ArrayList<String>();
+		
+		Enumeration<String> props = httpServletRequest.getParameterNames();
+		
+		while(props.hasMoreElements()){
+			String propName = props.nextElement();
+			keyValues.put(propName, httpServletRequest.getParameter(propName));
+		}
+		for(String s: keyValues.keySet()){
+			if(!keyValues.get(s).equals("")){
+				usedProperties.add(s);
+			}
+		}
+		
+		//newResource = new Requirement(aResource);
+		ArrayList<String> properties = new ArrayList<String>();
+		for(Field f: Requirement.class.getDeclaredFields()){
+			properties.add(f.getName());
+		}
+		
+		newResource = new Requirement(aResource, properties, usedProperties);
+		
+		Requirements.getRequirements().add(newResource);
 
+
+
+		//System.out.println(Requirements.getRequirements());
+		CSVWriter.writeToFile();
+	
 		// Start of user code createRequirement
 		// End of user code
 		return newResource;
