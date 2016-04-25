@@ -20,19 +20,21 @@
 --%>
 
 <%@page import="org.eclipse.lyo.oslc4j.core.model.ServiceProvider"%>
-<%@page import="java.util.List" %>
-<%@page import="hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection"%>
-<%--
+<%@page import="java.util.List"%>
+<%@page
+	import="hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection"%>
+<%-- 
 Start of user code imports
 --%>
 <%-- 
 End of user code 
 --%>
 
-<%@ page contentType="text/html" language="java" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html" language="java" pageEncoding="UTF-8"%>
 
 <%
-    RequirementCollection aRequirementCollection = (RequirementCollection) request.getAttribute("aRequirementCollection");
+	RequirementCollection aRequirementCollection = (RequirementCollection) request
+			.getAttribute("aRequirementCollection");
 %>
 <%--
 Start of user code getRequestAttributes
@@ -42,144 +44,141 @@ End of user code
 --%>
 
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-		<title><%= aRequirementCollection.toHtml() %></title>
-		<%-- 
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title><%=aRequirementCollection.toHtml()%></title>
+<%-- 
 Start of user code (RECOMMENDED) headStuff 
 		--%>
-		<%-- 
+<%-- 
 End of user code 
 		--%>
-	</head>
-	<body onload="">
-		<div id="header">
-			<div id="banner"></div>
-			<table border="0" cellspacing="0" cellpadding="0" id="titles">
-				<tr>
-					<td id="title">
-						<p>
-							<%= aRequirementCollection.toHtml() %>
-						</p>
-					</td>
-					<td id="information">
-						<p class="header_addl_info">
-							version 0.1
-						</p>
-					</td>
-				</tr>
-			</table>
-		</div>
-		
-		<div id="bugzilla-body">  
-			<div id="page-index">
-				<%-- 
+</head>
+<body onload="">
+	<div id="header">
+		<div id="banner"></div>
+		<table border="0" cellspacing="0" cellpadding="0" id="titles">
+			<tr>
+				<td id="title">
+					<p>
+						<%=aRequirementCollection.toHtml()%>
+					</p>
+				</td>
+				<td id="information">
+					<p class="header_addl_info">version 0.1</p>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="bugzilla-body">
+		<div id="page-index">
+			<%-- 
 Start of user code (RECOMMENDED) bodyStuff1 
 				--%>
-				<%-- 
+			<%-- 
 End of user code 
 				--%>
 
-				<h1>Resource Presentation</h1>
-                <p>Summary: <%= aRequirementCollection.toHtml() %><br /></p>
-				<h2>Properties</h2>
-				<table style="clear: both;">
-					<tr>
-						<td><%= aRequirementCollection.titleToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.descriptionToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.identifierToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.shortTitleToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.subjectToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.creatorToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.contributorToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.createdToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.modifiedToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.typeToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.serviceProviderToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.instanceShapeToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.usesToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.elaboratedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.elaboratesToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.specifiedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.specifiesToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.affectedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.trackedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.implementedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.validatedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.satisfiedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.satisfiesToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.decomposedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.decomposesToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.constrainedByToHtml()%></td>
-					</tr>
-					<tr>
-						<td><%= aRequirementCollection.constrainsToHtml()%></td>
-					</tr>
-				</table>
+			<h1>Resource Presentation</h1>
+			<p>
+				Summary:
+				<%=aRequirementCollection.toHtml()%><br />
+			</p>
+			<h2>Properties</h2>
+			<h3>Papyrus properties</h3>
+			<table style="clear: both;" border="1">
+				<tr>
+					<td><%=aRequirementCollection.titleToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.usesToHtml()%></td>
+				</tr>
+			</table>
+			<br>
+			<h3>Requirements Management Specification Version 2.0 properties</h3>
+			<table style="clear: both;" border="1">
+				<tr>
+					<td><%=aRequirementCollection.descriptionToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.identifierToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.shortTitleToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.subjectToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.creatorToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.contributorToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.createdToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.modifiedToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.typeToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.serviceProviderToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.instanceShapeToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.elaboratedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.elaboratesToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.specifiedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.specifiesToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.affectedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.trackedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.implementedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.validatedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.satisfiedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.satisfiesToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.decomposedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.decomposesToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.constrainedByToHtml()%></td>
+				</tr>
+				<tr>
+					<td><%=aRequirementCollection.constrainsToHtml()%></td>
+				</tr>
+			</table>
 
-			</div>
 		</div>
-		
-		<div id="footer">
-			<div class="intro"></div>
-			<div class="outro">
-				<div style="margin: 0 1em 1em 1em; line-height: 1.6em; text-align: left">
-					<b>OSLC Tools Adapter Server 0.1</b> brought to you by <a href="http://eclipse.org/lyo">Eclipse Lyo</a><br />
-				</div>
-			</div>
-		</div>
-		
+	</div>
 
-		
-	</body>
+
+
+</body>
 </html>

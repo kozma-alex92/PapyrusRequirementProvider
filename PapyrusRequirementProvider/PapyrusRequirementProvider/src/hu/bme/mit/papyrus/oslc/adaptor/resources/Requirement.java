@@ -237,25 +237,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		return propertyValue;
 	}
-	
-	public Requirement(Requirement r, ArrayList<String> properties){
+
+	public Requirement(Requirement r, ArrayList<String> properties) {
 		super();
 		setAbout(r.getAbout());
 		Method getMethod;
 		Method setMethod;
 		try {
 			for (String s : properties) {
-				String methodName = "get" + s.substring(0, 1).toUpperCase()
-						+ s.substring(1);
+				String methodName = "get" + s.substring(0, 1).toUpperCase() + s.substring(1);
 				getMethod = r.getClass().getDeclaredMethod(methodName);
 				Object paramPropertyValue;
 				paramPropertyValue = getMethod.invoke(r);
-				methodName = "set" + s.substring(0, 1).toUpperCase()
-						+ s.substring(1);
+				methodName = "set" + s.substring(0, 1).toUpperCase() + s.substring(1);
 				setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
 				setMethod.invoke(this, paramPropertyValue);
 			}
-			if(getAbout()==null || getAbout().toString().isEmpty()){
+			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
 		} catch (NoSuchMethodException e1) {
@@ -275,28 +273,25 @@ public class Requirement extends AbstractResource implements IRequirement {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	public Requirement(Requirement r, ArrayList<String> properties, ArrayList<String> usedProperties){
+
+	public Requirement(Requirement r, ArrayList<String> properties, ArrayList<String> usedProperties) {
 		super();
 		setAbout(r.getAbout());
 		Method getMethod;
 		Method setMethod;
 		try {
 			for (String s : properties) {
-				String methodName = "get" + s.substring(0, 1).toUpperCase()
-						+ s.substring(1);
+				String methodName = "get" + s.substring(0, 1).toUpperCase() + s.substring(1);
 				getMethod = r.getClass().getDeclaredMethod(methodName);
 				Object paramPropertyValue;
 				paramPropertyValue = getMethod.invoke(r);
-				if(usedProperties.contains(s)){
-					methodName = "set" + s.substring(0, 1).toUpperCase()
-							+ s.substring(1);
+				if (usedProperties.contains(s)) {
+					methodName = "set" + s.substring(0, 1).toUpperCase() + s.substring(1);
 					setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
 					setMethod.invoke(this, paramPropertyValue);
 				}
 			}
-			if(getAbout()==null || getAbout().toString().isEmpty()){
+			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
 		} catch (NoSuchMethodException e1) {
@@ -316,22 +311,20 @@ public class Requirement extends AbstractResource implements IRequirement {
 			e.printStackTrace();
 		}
 	}
-	
-	public Requirement(Map<String, String> properties){
+
+	public Requirement(Map<String, String> properties) {
 		super();
 		Method getMethod;
 		Method setMethod;
 		try {
 			for (String s : properties.keySet()) {
-				String methodName = "get" + s.substring(0, 1).toUpperCase()
-						+ s.substring(1);
+				String methodName = "get" + s.substring(0, 1).toUpperCase() + s.substring(1);
 				getMethod = this.getClass().getDeclaredMethod(methodName);
-				methodName = "set" + s.substring(0, 1).toUpperCase()
-						+ s.substring(1);
+				methodName = "set" + s.substring(0, 1).toUpperCase() + s.substring(1);
 				setMethod = this.getClass().getDeclaredMethod(methodName, getMethod.getReturnType());
 				setMethod.invoke(this, properties.get(s));
 			}
-			if(getAbout()==null || getAbout().toString().isEmpty()){
+			if (getAbout() == null || getAbout().toString().isEmpty()) {
 				this.setAbout(constructURI("Provider", getIdentifier()));
 			}
 		} catch (NoSuchMethodException e1) {
@@ -388,8 +381,8 @@ public class Requirement extends AbstractResource implements IRequirement {
 		setTypes(r.getTypes());
 		setValidatedBy(r.getValidatedBy());
 		setVerifiedBy(r.getVerifiedBy());
-		
-		if(getAbout()==null || getAbout().toString().isEmpty()){
+
+		if (getAbout() == null || getAbout().toString().isEmpty()) {
 			this.setAbout(constructURI("Provider", getIdentifier()));
 		}
 		// End of user code
@@ -2289,7 +2282,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code elaboratedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = elaboratedBy.iterator();
 			while (itr.hasNext()) {
@@ -2300,6 +2293,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!elaboratedBy.isEmpty()) {
+				for (Link l : elaboratedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2323,7 +2333,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code elaboratestoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = elaborates.iterator();
 			while (itr.hasNext()) {
@@ -2334,6 +2344,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!elaborates.isEmpty()) {
+				for (Link l : elaborates) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2357,7 +2384,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code specifiedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = specifiedBy.iterator();
 			while (itr.hasNext()) {
@@ -2368,6 +2395,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!specifiedBy.isEmpty()) {
+				for (Link l : specifiedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2391,7 +2435,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code specifiestoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = specifies.iterator();
 			while (itr.hasNext()) {
@@ -2406,7 +2450,25 @@ public class Requirement extends AbstractResource implements IRequirement {
 			s = s + "</ul>";
 		} catch (Exception e) {
 			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!specifies.isEmpty()) {
+				for (Link l : specifies) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 
 		// Start of user code specifiestoHtml_finalize
 		// End of user code
@@ -2425,7 +2487,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code affectedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = affectedBy.iterator();
 			while (itr.hasNext()) {
@@ -2440,7 +2502,25 @@ public class Requirement extends AbstractResource implements IRequirement {
 			s = s + "</ul>";
 		} catch (Exception e) {
 			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!affectedBy.isEmpty()) {
+				for (Link l : affectedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+
 
 		// Start of user code affectedBytoHtml_finalize
 		// End of user code
@@ -2459,7 +2539,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code trackedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = trackedBy.iterator();
 			while (itr.hasNext()) {
@@ -2470,6 +2550,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!trackedBy.isEmpty()) {
+				for (Link l : trackedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2493,7 +2590,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code implementedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = implementedBy.iterator();
 			while (itr.hasNext()) {
@@ -2504,6 +2601,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!implementedBy.isEmpty()) {
+				for (Link l : implementedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2527,7 +2641,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code validatedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = validatedBy.iterator();
 			while (itr.hasNext()) {
@@ -2538,6 +2652,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!validatedBy.isEmpty()) {
+				for (Link l : validatedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2577,6 +2708,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 
 		// Start of user code satisfiedBytoHtml_finalize
 		// End of user code
@@ -2595,7 +2727,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code satisfiestoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = satisfies.iterator();
 			while (itr.hasNext()) {
@@ -2610,8 +2742,26 @@ public class Requirement extends AbstractResource implements IRequirement {
 			s = s + "</ul>";
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
+		}*/
 
+		
+		try {
+			s = s + "<ul>";
+			if (!satisfies.isEmpty()) {
+				for (Link l : satisfies) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		// Start of user code satisfiestoHtml_finalize
 		// End of user code
 
@@ -2629,7 +2779,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code decomposedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = decomposedBy.iterator();
 			while (itr.hasNext()) {
@@ -2640,6 +2790,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!decomposedBy.isEmpty()) {
+				for (Link l : decomposedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2663,7 +2830,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code decomposestoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = decomposes.iterator();
 			while (itr.hasNext()) {
@@ -2674,6 +2841,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!decomposes.isEmpty()) {
+				for (Link l : decomposes) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2697,7 +2881,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code constrainedBytoHtml_mid
 		// End of user code
 
-		try {
+/*		try {
 			s = s + "<ul>";
 			Iterator<Link> itr = constrainedBy.iterator();
 			while (itr.hasNext()) {
@@ -2708,6 +2892,23 @@ public class Requirement extends AbstractResource implements IRequirement {
 					s = s + itr.next().getValue().toString();
 				}
 				s = s + "</li>";
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}*/
+		
+		try {
+			s = s + "<ul>";
+			if (!constrainedBy.isEmpty()) {
+				for (Link l : constrainedBy) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2731,17 +2932,25 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code constrainstoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<Link> itr = constrains.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; if (itr.next().getValue() ==
+		 * null) { s = s + "<em>null</em>"; } else { s = s +
+		 * itr.next().getValue().toString(); } s = s + "</li>"; } s = s +
+		 * "</ul>"; } catch (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
 			s = s + "<ul>";
-			Iterator<Link> itr = constrains.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				if (itr.next().getValue() == null) {
-					s = s + "<em>null</em>";
-				} else {
-					s = s + itr.next().getValue().toString();
+			if (!constrains.isEmpty()) {
+				for (Link l : constrains) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
 				}
-				s = s + "</li>";
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2873,13 +3082,24 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code subjecttoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<String> itr = subject.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toString(); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
 			s = s + "<ul>";
-			Iterator<String> itr = subject.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				s = s + itr.next().toString();
-				s = s + "</li>";
+			if (!subject.isEmpty()) {
+				for (String p : subject) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + p;
+					s = s + '"' + ">" + p + "</a>";
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2903,13 +3123,22 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code creatortoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<Person> itr = creator.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toHtml(true); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
 			s = s + "<ul>";
-			Iterator<Person> itr = creator.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				s = s + itr.next().toHtml(true);
-				s = s + "</li>";
+			if (!creator.isEmpty()) {
+				for (Person p : creator) {
+					s = s + "<li>";
+					s = s + p.toHtml();
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -2933,13 +3162,22 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// Start of user code contributortoHtml_mid
 		// End of user code
 
+		/*
+		 * try { s = s + "<ul>"; Iterator<Person> itr = contributor.iterator();
+		 * while (itr.hasNext()) { s = s + "<li>"; s = s +
+		 * itr.next().toHtml(true); s = s + "</li>"; } s = s + "</ul>"; } catch
+		 * (Exception e) { e.printStackTrace(); }
+		 */
+
 		try {
 			s = s + "<ul>";
-			Iterator<Person> itr = contributor.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				s = s + itr.next().toHtml(true);
-				s = s + "</li>";
+			if (!contributor.isEmpty()) {
+				for (Person p : contributor) {
+					s = s + "<li>";
+					s = s + p.toHtml();
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {
@@ -3019,11 +3257,13 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		try {
 			s = s + "<ul>";
-			Iterator<Type> itr = type.iterator();
-			while (itr.hasNext()) {
-				s = s + "<li>";
-				s = s + itr.next().toHtml(true);
-				s = s + "</li>";
+			if (!type.isEmpty()) {
+				for (Type t : type) {
+					s = s + "<li>";
+					s = s + t.toHtml();
+					s = s + "</li>";
+				}
+
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {

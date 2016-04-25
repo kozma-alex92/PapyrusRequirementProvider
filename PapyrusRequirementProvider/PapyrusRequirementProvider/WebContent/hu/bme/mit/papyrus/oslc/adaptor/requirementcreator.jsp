@@ -64,9 +64,6 @@ End of user code
 		--%>
 			<h2>Papyrus properties</h2>
 			<table style="clear: both;">
-								<tr>
-					<td><%=request.get%></td>
-				</tr>
 				<tr>
 					<td><%=Requirement.titleToHtmlForCreation1(request, id)%></td>
 				</tr>
