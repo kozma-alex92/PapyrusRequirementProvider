@@ -24,6 +24,7 @@ package hu.bme.mit.papyrus.oslc.adaptor;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 import javax.servlet.ServletContextEvent;
 
 import java.util.ArrayList;
@@ -31,9 +32,13 @@ import java.util.List;
 
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
+import org.eclipse.lyo.oslc4j.core.model.Link;
+
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
 import hu.bme.mit.papyrus.oslc.adaptor.util.CSVReader;
 import hu.bme.mit.papyrus.oslc.adaptor.util.ConfigProperties;
+import hu.bme.mit.papyrus.oslc.adaptor.util.QueryHelper;
+import hu.bme.mit.papyrus.oslc.adaptor.util.WhereParam;
 import hu.bme.mit.papyrus.oslc.adaptor.ServiceProviderInfo;
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
@@ -51,125 +56,156 @@ public class PapyrusRequirementProviderManager {
 
 	// Start of user code class_attributes
 	// End of user code
-	
+
 	// Start of user code class_methods
 	// End of user code
 
-    public static void contextInitializeServletListener(final ServletContextEvent servletContextEvent)
-    {
+	public static void contextInitializeServletListener(final ServletContextEvent servletContextEvent) {
 		// TODO Implement code to establish connection to data backbone etc ...
 		// Start of user code contextInitializeServletListener
-    	ConfigProperties.initProperties();
+		ConfigProperties.initProperties();
 		CSVReader reader = new CSVReader();
 		CSVReader.refreshRequirements();
 		Requirements.init();
 		new Thread(reader).start();
 		// End of user code
-    }
+	}
 
-	public static void contextDestroyServletListener(ServletContextEvent servletContextEvent) 
-	{
+	public static void contextDestroyServletListener(ServletContextEvent servletContextEvent) {
 		// TODO Implement code to shutdown connections to data backbone etc...
 		// Start of user code contextDestroyed
 		// End of user code
 	}
 
-    public static ServiceProviderInfo[] getServiceProviderInfos(HttpServletRequest httpServletRequest)
-    {
+	public static ServiceProviderInfo[] getServiceProviderInfos(HttpServletRequest httpServletRequest) {
 		ServiceProviderInfo[] serviceProviderInfos = {};
 		// TODO Implement code to return the set of ServiceProviders
-		// Start of user code "ServiceProviderInfo[] getServiceProviderInfos(...)"
+		// Start of user code "ServiceProviderInfo[]
+		// getServiceProviderInfos(...)"
 		final List<ServiceProviderInfo> infos = new ArrayList<ServiceProviderInfo>();
-        final ServiceProviderInfo serviceProviderInfo = new ServiceProviderInfo();
-        serviceProviderInfo.name = "Requirement Service Provider";
-        serviceProviderInfo.id = "Provider";
-        infos.add(serviceProviderInfo);
-        
-        serviceProviderInfos = infos.toArray(new ServiceProviderInfo[infos.size()]);
+		final ServiceProviderInfo serviceProviderInfo = new ServiceProviderInfo();
+		serviceProviderInfo.name = "Requirement Service Provider";
+		serviceProviderInfo.id = "Provider";
+		infos.add(serviceProviderInfo);
+
+		serviceProviderInfos = infos.toArray(new ServiceProviderInfo[infos.size()]);
 		// End of user code
 		return serviceProviderInfos;
-    }
+	}
 
-    public static List<Requirement> queryRequirements(HttpServletRequest httpServletRequest, final String id, String where, int page, int limit)
-    {
-		List<Requirement> resources = null;
+	public static List<Requirement> queryRequirements(HttpServletRequest httpServletRequest, final String id,
+			String where, int page, int limit) {
+		List<Requirement> resources = new ArrayList<Requirement>();
 		// TODO Implement code to return a set of resources
-		 resources = Requirements.getRequirements();
+		ArrayList<WhereParam> whereParams = QueryHelper.getWhereParams(where);
+		for (Requirement req : Requirements.getRequirements()) {
+			if(req.matches(whereParams)){
+				resources.add(req);
+			}
+		}
 		// Start of user code queryRequirements
 		// End of user code
 		return resources;
-    }
-    public static List<RequirementCollection> queryRequirementCollections(HttpServletRequest httpServletRequest, final String id, String where, int page, int limit)
-    {
+	}
+
+	public static List<RequirementCollection> queryRequirementCollections(HttpServletRequest httpServletRequest,
+			final String id, String where, int page, int limit) {
 		List<RequirementCollection> resources = null;
 		// TODO Implement code to return a set of resources
 		resources = Requirements.getRequirementCollections();
 		// Start of user code queryRequirementCollections
 		// End of user code
 		return resources;
-    }
-	public static List<Requirement> RequirementSelector(HttpServletRequest httpServletRequest, final String id, String terms)   
-    {
+	}
+
+	public static List<Requirement> RequirementSelector(HttpServletRequest httpServletRequest, final String id,
+			String terms) {
 		List<Requirement> resources = null;
-		// TODO Implement code to return a set of resources, based on search criteria 
-		
+		// TODO Implement code to return a set of resources, based on search
+		// criteria
 		// Start of user code RequirementSelector
+		resources = new ArrayList<Requirement>();
+		for (Requirement r : Requirements.getRequirements()) {
+			if (r.getDescription().contains(terms) || r.getTitle().contains(terms)) {
+				resources.add(r);
+			}
+		}
 		// End of user code
 		return resources;
-    }
-	public static List<RequirementCollection> RequirementCollectionSelector(HttpServletRequest httpServletRequest, final String id, String terms)   
-    {
+	}
+
+	public static List<RequirementCollection> RequirementCollectionSelector(HttpServletRequest httpServletRequest,
+			final String id, String terms) {
 		List<RequirementCollection> resources = null;
-		// TODO Implement code to return a set of resources, based on search criteria 
-		
+		// TODO Implement code to return a set of resources, based on search
+		// criteria
 		// Start of user code RequirementCollectionSelector
+		resources = new ArrayList<RequirementCollection>();
+		for (RequirementCollection r : Requirements.getRequirementCollections()) {
+			boolean matches = false;
+			for (Link l : r.getUses()) {
+				Requirement req = Requirements.getRequirementByAbout(l.getValue());
+				if (req.getTitle().contains(terms) || req.getDescription().contains(terms)) {
+					matches = true;
+				}
+			}
+			if (matches)
+				resources.add(r);
+		}
 		// End of user code
 		return resources;
-    }
-	public static Requirement createRequirement(HttpServletRequest httpServletRequest, final Requirement aResource, final String id)
-    {
+	}
+
+	public static Requirement createRequirement(HttpServletRequest httpServletRequest, final Requirement aResource,
+			final String id) {
 		Requirement newResource = null;
 		// TODO Implement code to create a resource
-		
+
 		// Start of user code createRequirement
 		// End of user code
 		return newResource;
-    }
+	}
 
-	public static String getETagFromRequirement(final Requirement aResource)
-    {
+	public static String getETagFromRequirement(final Requirement aResource) {
 		String eTag = null;
 		// TODO Implement code to return an ETag for a particular resource
 		// Start of user code getETagFromRequirement
 		// End of user code
 		return eTag;
-    }
-	public static Requirement getRequirement(HttpServletRequest httpServletRequest, final String id, final String requirementId)
-    {
+	}
+
+	public static Requirement getRequirement(HttpServletRequest httpServletRequest, final String id,
+			final String requirementId, final String properties) {
 		Requirement aResource = null;
 		// TODO Implement code to return a resource
-		for(Requirement r: Requirements.getRequirements()){
-			if(r.getIdentifier().equals(requirementId)){
-				aResource= r;
+		QueryHelper.getPropertyParams(properties);
+		for (Requirement r : Requirements.getRequirements()) {
+			if (r.getIdentifier().equals(requirementId)) {
+				aResource = r;
+				if(properties!=null){
+					aResource = new Requirement(aResource, QueryHelper.propertyParams);
+				}
 				return aResource;
 			}
 		}
+
 		// Start of user code getRequirement
 		// End of user code
 		return aResource;
-    }
-	public static RequirementCollection getRequirementCollection(HttpServletRequest httpServletRequest, final String id, final String requirementCollectionId)
-    {
+	}
+
+	public static RequirementCollection getRequirementCollection(HttpServletRequest httpServletRequest, final String id,
+			final String requirementCollectionId) {
 		RequirementCollection aResource = null;
 		// TODO Implement code to return a resource
-		for(RequirementCollection r: Requirements.getRequirementCollections()){
-			if(r.getIdentifier().equals(requirementCollectionId)){
-				aResource= r;
+		for (RequirementCollection r : Requirements.getRequirementCollections()) {
+			if (r.getIdentifier().equals(requirementCollectionId)) {
+				aResource = r;
 				return aResource;
 			}
 		}
 		// Start of user code getRequirementCollection
 		// End of user code
 		return aResource;
-    }
+	}
 }

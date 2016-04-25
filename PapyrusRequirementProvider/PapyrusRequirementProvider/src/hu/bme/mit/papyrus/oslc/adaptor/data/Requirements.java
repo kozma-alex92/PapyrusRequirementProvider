@@ -1,5 +1,6 @@
 package hu.bme.mit.papyrus.oslc.adaptor.data;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -196,6 +197,15 @@ public final class Requirements {
 
 	}
 
+	public static Requirement getRequirementByAbout(URI about) {
+		for (Requirement r : requirements) {
+			if (r.getAbout()==about) {
+				return r;
+			}
+		}
+		return null;
+	}
+	
 	public static List<Requirement> getRequirements() {
 		return requirements;
 	}

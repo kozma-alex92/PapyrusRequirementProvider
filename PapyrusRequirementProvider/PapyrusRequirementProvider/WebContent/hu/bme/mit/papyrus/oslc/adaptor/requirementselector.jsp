@@ -67,10 +67,10 @@ End of user code
 			</div>
 
 			<div style="margin-top: 5px;">
-				<select id="results" size="10" style="width: 400px"></select>
+				<select id="results" size="10" style="width: 900px"></select>
 			</div>
 
-			<div style="width: 400px; margin-top: 5px;">
+			<div style="width: 900px; margin-top: 5px;">
 				<button style="float: right;" type="button"
 					onclick="javascript: cancel()">Cancel</button>
 				<button style="float: right;" type="button"

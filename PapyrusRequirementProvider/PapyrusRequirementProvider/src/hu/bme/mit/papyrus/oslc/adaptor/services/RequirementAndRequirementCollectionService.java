@@ -28,6 +28,7 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -56,7 +57,9 @@ import javax.ws.rs.core.UriBuilder;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcCreationFactory;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDialog;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcDialogs;
+import org.eclipse.lyo.oslc4j.core.annotation.OslcNamespaceDefinition;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcQueryCapability;
+import org.eclipse.lyo.oslc4j.core.annotation.OslcSchema;
 import org.eclipse.lyo.oslc4j.core.annotation.OslcService;
 import org.eclipse.lyo.oslc4j.core.model.Compact;
 import org.eclipse.lyo.oslc4j.core.model.OslcConstants;
@@ -69,10 +72,10 @@ import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderManager;
 import hu.bme.mit.papyrus.oslc.adaptor.PapyrusRequirementProviderConstants;
 import hu.bme.mit.papyrus.oslc.adaptor.servlet.ServiceProviderCatalogSingleton;
-import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;	
-import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;	
-import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;	
-import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;	
+import hu.bme.mit.papyrus.oslc.adaptor.resources.Person;
+import hu.bme.mit.papyrus.oslc.adaptor.resources.Requirement;
+import hu.bme.mit.papyrus.oslc.adaptor.resources.RequirementCollection;
+import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 // Start of user code imports
 // End of user code
@@ -82,91 +85,118 @@ import hu.bme.mit.papyrus.oslc.adaptor.resources.Type;
 
 @OslcService(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_DOMAIN)
 @Path("serviceProviders/RequirementService{id}/resources")
-public class RequirementAndRequirementCollectionService
-{
-	@Context private HttpServletRequest httpServletRequest;
-	@Context private HttpServletResponse httpServletResponse;
-	@Context private UriInfo uriInfo;
+public class RequirementAndRequirementCollectionService {
+	@Context
+	private HttpServletRequest httpServletRequest;
+	@Context
+	private HttpServletResponse httpServletResponse;
+	@Context
+	private UriInfo uriInfo;
 
 	// Start of user code class_attributes
 	// End of user code
-	
+
 	// Start of user code class_methods
 	// End of user code
-	
-    public RequirementAndRequirementCollectionService()
-    {
-        super();
-    }
 
-    /**
-     * RDF/XML, XML and JSON representation of a change request collection
-     * 
-     * TODO:  add query support
-     * 
-     * @param productId
-     * @param where
-     * @param pageString
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     */
-    @OslcQueryCapability
-    (
-        title = "Requirement Query",
-        label = "ReqQuery",
-        resourceShape = OslcConstants.PATH_RESOURCE_SHAPES + "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT,
-        resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENT},
-        usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-    ) 
-    @GET 
-    @Path("requirementQuery")
-    @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public Requirement[] queryRequirements(
-													@PathParam("id") final String id ,
-    		                                 		@QueryParam("oslc.where") final String where,
-    		                                 		@QueryParam("page") final String pageString,
-													@QueryParam("limit") final String limitString) throws IOException, ServletException 
-    {
-		int page=0;
-		int limit=20;
+	public RequirementAndRequirementCollectionService() {
+		super();
+	}
+
+	/**
+	 * RDF/XML, XML and JSON representation of a change request collection
+	 * 
+	 * TODO: add query support
+	 * 
+	 * @param productId
+	 * @param where
+	 * @param pageString
+	 * @return
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	@OslcQueryCapability(title = "Requirement Query", label = "ReqQuery", resourceShape = OslcConstants.PATH_RESOURCE_SHAPES
+			+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT, resourceTypes = {
+					PapyrusRequirementProviderConstants.TYPE_REQUIREMENT }, usages = {
+							OslcConstants.OSLC_USAGE_DEFAULT })
+	@GET
+	@Path("requirementQuery")
+	@Produces({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	public Requirement[] queryRequirements(@PathParam("id") final String id,
+			@QueryParam("oslc.where") final String where, @QueryParam("oslc.prefix") final String prefix,
+			@QueryParam("page") final String pageString, @QueryParam("limit") final String limitString)
+			throws IOException, ServletException {
+		int page = 0;
+		int limit = 20;
 		if (null != pageString) {
 			page = Integer.parseInt(pageString);
 		}
 		if (null != limitString) {
 			limit = Integer.parseInt(limitString);
 		}
-        
-		// Start of user code queryRequirements
+
 		// End of user code
 
-        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id, where, page, limit);
-        return resources.toArray(new Requirement [resources.size()]);
-    }
+		final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id,
+				where, page, limit);
+		return resources.toArray(new Requirement[resources.size()]);
+	}
 
-    /**
-     * HTML representation of change request collection
-     * 
-     * Forwards to changerequest_collection_html.jsp to build the html page
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @param pageString
-     * @return
-     * @throws ServletException
-     * @throws IOException
-     */
+	private static void addDefaultPrefixes(final Map<String, String> prefixMap) {
+		recursivelyCollectNamespaceMappings(prefixMap, Requirement.class);
+	}
+
+	private static void recursivelyCollectNamespaceMappings(final Map<String, String> prefixMap,
+			final Class<? extends Object> resourceClass) {
+		final OslcSchema oslcSchemaAnnotation = resourceClass.getPackage().getAnnotation(OslcSchema.class);
+
+		if (oslcSchemaAnnotation != null) {
+			final OslcNamespaceDefinition[] oslcNamespaceDefinitionAnnotations = oslcSchemaAnnotation.value();
+
+			for (final OslcNamespaceDefinition oslcNamespaceDefinitionAnnotation : oslcNamespaceDefinitionAnnotations) {
+				final String prefix = oslcNamespaceDefinitionAnnotation.prefix();
+				final String namespaceURI = oslcNamespaceDefinitionAnnotation.namespaceURI();
+
+				prefixMap.put(prefix, namespaceURI);
+			}
+		}
+
+		final Class<?> superClass = resourceClass.getSuperclass();
+
+		if (superClass != null) {
+			recursivelyCollectNamespaceMappings(prefixMap, superClass);
+		}
+
+		final Class<?>[] interfaces = resourceClass.getInterfaces();
+
+		if (interfaces != null) {
+			for (final Class<?> interfac : interfaces) {
+				recursivelyCollectNamespaceMappings(prefixMap, interfac);
+			}
+		}
+	}
+
+	/**
+	 * HTML representation of change request collection
+	 * 
+	 * Forwards to changerequest_collection_html.jsp to build the html page
+	 * 
+	 * @param productId
+	 * @param changeRequestId
+	 * @param pageString
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@GET
-    @Path("requirementQuery")
+	@Path("requirementQuery")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response queryRequirementsAsHtml(
-									@PathParam("id") final String id ,
-                               		@QueryParam("oslc.where") final String where,
-                               		@QueryParam("page") final String pageString,
-			                        @QueryParam("limit") final String limitString) throws ServletException, IOException
-	{
-		int page=0;
-		int limit=20;
+	public Response queryRequirementsAsHtml(@PathParam("id") final String id,
+			@QueryParam("oslc.where") final String where, @QueryParam("oslc.prefix") final String prefix,
+			@QueryParam("page") final String pageString, @QueryParam("limit") final String limitString)
+			throws ServletException, IOException {
+		int page = 0;
+		int limit = 20;
 		if (null != pageString) {
 			page = Integer.parseInt(pageString);
 		}
@@ -175,96 +205,91 @@ public class RequirementAndRequirementCollectionService
 		}
 
 		// Start of user code queryRequirementsAsHtml
+		
+		
 		// End of user code
 
-        final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id, where, page, limit);
-		
-        if (resources!= null) {
-        	httpServletRequest.setAttribute("resources", resources);
+		final List<Requirement> resources = PapyrusRequirementProviderManager.queryRequirements(httpServletRequest, id,
+				where, page, limit);
+
+		if (resources != null) {
+			httpServletRequest.setAttribute("resources", resources);
 			// Start of user code queryRequirementsAsHtml_setAttributes
 			// End of user code
 
-        	httpServletRequest.setAttribute("queryUri", 
-                    uriInfo.getAbsolutePath().toString() + "?oslc.paging=true");
-        	if (resources.size() > limit) {
-        		resources.remove(resources.size() - 1);
-        		httpServletRequest.setAttribute("nextPageUri", 
-        				uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
-        	}
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementscollection.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
-        }
-		
-		throw new WebApplicationException(Status.NOT_FOUND);	
+			httpServletRequest.setAttribute("queryUri", uriInfo.getAbsolutePath().toString() + "?oslc.paging=true");
+			if (resources.size() > limit) {
+				resources.remove(resources.size() - 1);
+				httpServletRequest.setAttribute("nextPageUri",
+						uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
+			}
+			RequestDispatcher rd = httpServletRequest
+					.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementscollection.jsp");
+			rd.forward(httpServletRequest, httpServletResponse);
+		}
+
+		throw new WebApplicationException(Status.NOT_FOUND);
 	}
-    /**
-     * RDF/XML, XML and JSON representation of a change request collection
-     * 
-     * TODO:  add query support
-     * 
-     * @param productId
-     * @param where
-     * @param pageString
-     * @return
-     * @throws IOException
-     * @throws ServletException
-     */
-    @OslcQueryCapability
-    (
-        title = "RequirementCollection Query",
-        label = "ReqCollQuery",
-        resourceShape = OslcConstants.PATH_RESOURCE_SHAPES + "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION,
-        resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENTCOLLECTION},
-        usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-    ) 
-    @GET 
-    @Path("requirementCollectionQuery")
-    @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public RequirementCollection[] queryRequirementCollections(
-													@PathParam("id") final String id ,
-    		                                 		@QueryParam("oslc.where") final String where,
-    		                                 		@QueryParam("page") final String pageString,
-													@QueryParam("limit") final String limitString) throws IOException, ServletException 
-    {
-		int page=0;
-		int limit=20;
+
+	/**
+	 * RDF/XML, XML and JSON representation of a change request collection
+	 * 
+	 * TODO: add query support
+	 * 
+	 * @param productId
+	 * @param where
+	 * @param pageString
+	 * @return
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	@OslcQueryCapability(title = "RequirementCollection Query", label = "ReqCollQuery", resourceShape = OslcConstants.PATH_RESOURCE_SHAPES
+			+ "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENTCOLLECTION, resourceTypes = {
+					PapyrusRequirementProviderConstants.TYPE_REQUIREMENTCOLLECTION }, usages = {
+							OslcConstants.OSLC_USAGE_DEFAULT })
+	@GET
+	@Path("requirementCollectionQuery")
+	@Produces({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	public RequirementCollection[] queryRequirementCollections(@PathParam("id") final String id,
+			@QueryParam("oslc.where") final String where, @QueryParam("page") final String pageString,
+			@QueryParam("limit") final String limitString) throws IOException, ServletException {
+		int page = 0;
+		int limit = 20;
 		if (null != pageString) {
 			page = Integer.parseInt(pageString);
 		}
 		if (null != limitString) {
 			limit = Integer.parseInt(limitString);
 		}
-        
+
 		// Start of user code queryRequirementCollections
 		// End of user code
 
-        final List<RequirementCollection> resources = PapyrusRequirementProviderManager.queryRequirementCollections(httpServletRequest, id, where, page, limit);
-        return resources.toArray(new RequirementCollection [resources.size()]);
-    }
+		final List<RequirementCollection> resources = PapyrusRequirementProviderManager
+				.queryRequirementCollections(httpServletRequest, id, where, page, limit);
+		return resources.toArray(new RequirementCollection[resources.size()]);
+	}
 
-    /**
-     * HTML representation of change request collection
-     * 
-     * Forwards to changerequest_collection_html.jsp to build the html page
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @param pageString
-     * @return
-     * @throws ServletException
-     * @throws IOException
-     */
+	/**
+	 * HTML representation of change request collection
+	 * 
+	 * Forwards to changerequest_collection_html.jsp to build the html page
+	 * 
+	 * @param productId
+	 * @param changeRequestId
+	 * @param pageString
+	 * @return
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	@GET
-    @Path("requirementCollectionQuery")
+	@Path("requirementCollectionQuery")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response queryRequirementCollectionsAsHtml(
-									@PathParam("id") final String id ,
-                               		@QueryParam("oslc.where") final String where,
-                               		@QueryParam("page") final String pageString,
-			                        @QueryParam("limit") final String limitString) throws ServletException, IOException
-	{
-		int page=0;
-		int limit=20;
+	public Response queryRequirementCollectionsAsHtml(@PathParam("id") final String id,
+			@QueryParam("oslc.where") final String where, @QueryParam("page") final String pageString,
+			@QueryParam("limit") final String limitString) throws ServletException, IOException {
+		int page = 0;
+		int limit = 20;
 		if (null != pageString) {
 			page = Integer.parseInt(pageString);
 		}
@@ -275,35 +300,37 @@ public class RequirementAndRequirementCollectionService
 		// Start of user code queryRequirementCollectionsAsHtml
 		// End of user code
 
-        final List<RequirementCollection> resources = PapyrusRequirementProviderManager.queryRequirementCollections(httpServletRequest, id, where, page, limit);
-		
-        if (resources!= null) {
-        	httpServletRequest.setAttribute("resources", resources);
-			// Start of user code queryRequirementCollectionsAsHtml_setAttributes
+		final List<RequirementCollection> resources = PapyrusRequirementProviderManager
+				.queryRequirementCollections(httpServletRequest, id, where, page, limit);
+
+		if (resources != null) {
+			httpServletRequest.setAttribute("resources", resources);
+			// Start of user code
+			// queryRequirementCollectionsAsHtml_setAttributes
 			// End of user code
 
-        	httpServletRequest.setAttribute("queryUri", 
-                    uriInfo.getAbsolutePath().toString() + "?oslc.paging=true");
-        	if (resources.size() > limit) {
-        		resources.remove(resources.size() - 1);
-        		httpServletRequest.setAttribute("nextPageUri", 
-        				uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
-        	}
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionscollection.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
-        }
-		
-		throw new WebApplicationException(Status.NOT_FOUND);	
+			httpServletRequest.setAttribute("queryUri", uriInfo.getAbsolutePath().toString() + "?oslc.paging=true");
+			if (resources.size() > limit) {
+				resources.remove(resources.size() - 1);
+				httpServletRequest.setAttribute("nextPageUri",
+						uriInfo.getAbsolutePath().toString() + "?oslc.paging=true&amp;page=" + (page + 1));
+			}
+			RequestDispatcher rd = httpServletRequest
+					.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionscollection.jsp");
+			rd.forward(httpServletRequest, httpServletResponse);
+		}
+
+		throw new WebApplicationException(Status.NOT_FOUND);
 	}
 
 	/**
 	 * OSLC delegated selection dialog for change requests
 	 * 
-	 * If called without a "terms" parameter, forwards to changerequest_selector.jsp to 
-	 * build the html for the IFrame
+	 * If called without a "terms" parameter, forwards to
+	 * changerequest_selector.jsp to build the html for the IFrame
 	 * 
-	 * If called with a "terms" parameter, sends a Bug search to Bugzilla and then 
-	 * forwards to changerequest_filtered_json.jsp to build a JSON response
+	 * If called with a "terms" parameter, sends a Bug search to Bugzilla and
+	 * then forwards to changerequest_filtered_json.jsp to build a JSON response
 	 * 
 	 * 
 	 * @param terms
@@ -312,46 +339,38 @@ public class RequirementAndRequirementCollectionService
 	 * @throws IOException
 	 */
 
-    @OslcDialog
-    (
-         title = "Requirement Selection Dialog",
-         label = "ReqSelectionDialog",
-         uri = "serviceProviders/RequirementService{id}/resources/selectionDialogRequirement",
-         hintWidth = "0px",
-         hintHeight = "0px",
-         resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENT},
-         usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-    )
+	@OslcDialog(title = "Requirement Selection Dialog", label = "ReqSelectionDialog", uri = "serviceProviders/RequirementService{id}/resources/selectionDialogRequirement", hintWidth = "0px", hintHeight = "0px", resourceTypes = {
+			PapyrusRequirementProviderConstants.TYPE_REQUIREMENT }, usages = { OslcConstants.OSLC_USAGE_DEFAULT })
 	@GET
 	@Path("selectionDialogRequirement")
 	@Consumes({ MediaType.TEXT_HTML, MediaType.WILDCARD })
-	public void RequirementSelector(
-        @QueryParam("terms") final String terms
-		, @PathParam("id") final String id
-        ) throws ServletException, IOException
-	{
+	public void RequirementSelector(@QueryParam("terms") final String terms, @PathParam("id") final String id)
+			throws ServletException, IOException {
 		try {
 			// Start of user code RequirementSelector_init
 			// End of user code
 
-			httpServletRequest.setAttribute("selectionUri",uriInfo.getAbsolutePath().toString());
+			httpServletRequest.setAttribute("selectionUri", uriInfo.getAbsolutePath().toString());
 			// Start of user code RequirementSelector_setAttributes
 			// End of user code
 
-			if (terms != null ) {
+			if (terms != null) {
 				httpServletRequest.setAttribute("terms", terms);
-				final List<Requirement> resources = PapyrusRequirementProviderManager.RequirementSelector(httpServletRequest, id, terms);      
-				if (resources!= null) {
-							httpServletRequest.setAttribute("resources", resources);
-							RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementselectorresults.jsp"); 
-							rd.forward(httpServletRequest, httpServletResponse);
+				final List<Requirement> resources = PapyrusRequirementProviderManager
+						.RequirementSelector(httpServletRequest, id, terms);
+				if (resources != null) {
+					httpServletRequest.setAttribute("resources", resources);
+					RequestDispatcher rd = httpServletRequest
+							.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementselectorresults.jsp");
+					rd.forward(httpServletRequest, httpServletResponse);
 				}
-				//a empty search should return an empty list and not NULL!
-				throw new WebApplicationException(Status.NOT_FOUND);	
-			
+				// a empty search should return an empty list and not NULL!
+				throw new WebApplicationException(Status.NOT_FOUND);
+
 			} else {
-				try {	
-					RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementselector.jsp"); 
+				try {
+					RequestDispatcher rd = httpServletRequest
+							.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementselector.jsp");
 					rd.forward(httpServletRequest, httpServletResponse);
 				} catch (Exception e) {
 					throw new ServletException(e);
@@ -361,14 +380,15 @@ public class RequirementAndRequirementCollectionService
 			throw new WebApplicationException(e);
 		}
 	}
+
 	/**
 	 * OSLC delegated selection dialog for change requests
 	 * 
-	 * If called without a "terms" parameter, forwards to changerequest_selector.jsp to 
-	 * build the html for the IFrame
+	 * If called without a "terms" parameter, forwards to
+	 * changerequest_selector.jsp to build the html for the IFrame
 	 * 
-	 * If called with a "terms" parameter, sends a Bug search to Bugzilla and then 
-	 * forwards to changerequest_filtered_json.jsp to build a JSON response
+	 * If called with a "terms" parameter, sends a Bug search to Bugzilla and
+	 * then forwards to changerequest_filtered_json.jsp to build a JSON response
 	 * 
 	 * 
 	 * @param terms
@@ -377,46 +397,39 @@ public class RequirementAndRequirementCollectionService
 	 * @throws IOException
 	 */
 
-    @OslcDialog
-    (
-         title = "RequirementCollection Selection Dialog",
-         label = "ReqCollSelectionDialog",
-         uri = "serviceProviders/RequirementService{id}/resources/selectionDialogRequirementCollection",
-         hintWidth = "0px",
-         hintHeight = "0px",
-         resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENTCOLLECTION},
-         usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-    )
+	@OslcDialog(title = "RequirementCollection Selection Dialog", label = "ReqCollSelectionDialog", uri = "serviceProviders/RequirementService{id}/resources/selectionDialogRequirementCollection", hintWidth = "0px", hintHeight = "0px", resourceTypes = {
+			PapyrusRequirementProviderConstants.TYPE_REQUIREMENTCOLLECTION }, usages = {
+					OslcConstants.OSLC_USAGE_DEFAULT })
 	@GET
 	@Path("selectionDialogRequirementCollection")
 	@Consumes({ MediaType.TEXT_HTML, MediaType.WILDCARD })
-	public void RequirementCollectionSelector(
-        @QueryParam("terms") final String terms
-		, @PathParam("id") final String id
-        ) throws ServletException, IOException
-	{
+	public void RequirementCollectionSelector(@QueryParam("terms") final String terms, @PathParam("id") final String id)
+			throws ServletException, IOException {
 		try {
 			// Start of user code RequirementCollectionSelector_init
 			// End of user code
 
-			httpServletRequest.setAttribute("selectionUri",uriInfo.getAbsolutePath().toString());
+			httpServletRequest.setAttribute("selectionUri", uriInfo.getAbsolutePath().toString());
 			// Start of user code RequirementCollectionSelector_setAttributes
 			// End of user code
 
-			if (terms != null ) {
+			if (terms != null) {
 				httpServletRequest.setAttribute("terms", terms);
-				final List<RequirementCollection> resources = PapyrusRequirementProviderManager.RequirementCollectionSelector(httpServletRequest, id, terms);      
-				if (resources!= null) {
-							httpServletRequest.setAttribute("resources", resources);
-							RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionselectorresults.jsp"); 
-							rd.forward(httpServletRequest, httpServletResponse);
+				final List<RequirementCollection> resources = PapyrusRequirementProviderManager
+						.RequirementCollectionSelector(httpServletRequest, id, terms);
+				if (resources != null) {
+					httpServletRequest.setAttribute("resources", resources);
+					RequestDispatcher rd = httpServletRequest.getRequestDispatcher(
+							"/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionselectorresults.jsp");
+					rd.forward(httpServletRequest, httpServletResponse);
 				}
-				//a empty search should return an empty list and not NULL!
-				throw new WebApplicationException(Status.NOT_FOUND);	
-			
+				// a empty search should return an empty list and not NULL!
+				throw new WebApplicationException(Status.NOT_FOUND);
+
 			} else {
-				try {	
-					RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionselector.jsp"); 
+				try {
+					RequestDispatcher rd = httpServletRequest
+							.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollectionselector.jsp");
 					rd.forward(httpServletRequest, httpServletResponse);
 				} catch (Exception e) {
 					throw new ServletException(e);
@@ -429,331 +442,323 @@ public class RequirementAndRequirementCollectionService
 
 	/**
 	 * Create a single BugzillaChangeRequest via RDF/XML, XML or JSON POST
+	 * 
 	 * @param productId
 	 * @param changeRequest
 	 * @return
 	 * @throws IOException
 	 * @throws ServletException
 	 */
-	@OslcCreationFactory
-	(
-		 title = "Requirement Creation Factory",
-		 label = "ReqCreationFact",
-		 resourceShapes = {OslcConstants.PATH_RESOURCE_SHAPES + "/" + PapyrusRequirementProviderConstants.PATH_REQUIREMENT},
-		 resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENT},
-		 usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-	)
-    @POST
-    @Path("create")
-    @Consumes({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public Response createRequirement(
-            @PathParam("id") final String id , 
-            final Requirement aResource
-        ) throws IOException, ServletException
-    {
+	@OslcCreationFactory(title = "Requirement Creation Factory", label = "ReqCreationFact", resourceShapes = {
+			OslcConstants.PATH_RESOURCE_SHAPES + "/"
+					+ PapyrusRequirementProviderConstants.PATH_REQUIREMENT }, resourceTypes = {
+							PapyrusRequirementProviderConstants.TYPE_REQUIREMENT }, usages = {
+									OslcConstants.OSLC_USAGE_DEFAULT })
+	@POST
+	@Path("create")
+	@Consumes({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	@Produces({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	public Response createRequirement(@PathParam("id") final String id, final Requirement aResource)
+			throws IOException, ServletException {
 		try {
-    		Requirement newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, id);
-			httpServletResponse.setHeader("ETag", PapyrusRequirementProviderManager.getETagFromRequirement(newResource));
-	        return Response.created(newResource.getAbout()).entity(aResource).build();
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		throw new WebApplicationException(e);
-    	}
-    }
+			Requirement newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource,
+					id);
+			httpServletResponse.setHeader("ETag",
+					PapyrusRequirementProviderManager.getETagFromRequirement(newResource));
+			return Response.created(newResource.getAbout()).entity(aResource).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(e);
+		}
+	}
 
-    /**
-     * OSLC delegated creation dialog for a single change request
-     * 
-     * Forwards to changerequest_creator.jsp to build the html form
-     * 
-     * @param productId
-     * @throws IOException
-     * @throws ServletException
-     */
-    @GET
+	/**
+	 * OSLC delegated creation dialog for a single change request
+	 * 
+	 * Forwards to changerequest_creator.jsp to build the html form
+	 * 
+	 * @param productId
+	 * @throws IOException
+	 * @throws ServletException
+	 */
+	@GET
 	@Path("creationDialogRequirement")
-    @Consumes({MediaType.WILDCARD})
-    public void RequirementCreator(
-                @PathParam("id") final String id
-        ) throws IOException, ServletException
-    {
+	@Consumes({ MediaType.WILDCARD })
+	public void RequirementCreator(@PathParam("id") final String id) throws IOException, ServletException {
 		// Start of user code RequirementCreator
 		// End of user code
 
-        httpServletRequest.setAttribute("id", id);
+		httpServletRequest.setAttribute("id", id);
 
-		RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcreator.jsp");
+		RequestDispatcher rd = httpServletRequest
+				.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcreator.jsp");
 		rd.forward(httpServletRequest, httpServletResponse);
-    }
+	}
 
-    /**
-     * Backend creator for the OSLC delegated creation dialog. 
-     * 
-     * Accepts the input in FormParams and returns a small JSON response
-     * 
-     * @param productId
-     * @param component
-     * @param version
-     * @param summary
-     * @param op_sys
-     * @param platform
-     * @param description
-     */
-    @OslcDialog
-	(
-         title = "Requirement Creation Dialog",
-         label = "ReqCreationDialog",
-         uri = "serviceProviders/RequirementService{id}/resources/creationDialogRequirement",
-         hintWidth = "0px",
-         hintHeight = "0px",
-         resourceTypes = {PapyrusRequirementProviderConstants.TYPE_REQUIREMENT},
-         usages = {OslcConstants.OSLC_USAGE_DEFAULT}
-	)
-    @POST
+	/**
+	 * Backend creator for the OSLC delegated creation dialog.
+	 * 
+	 * Accepts the input in FormParams and returns a small JSON response
+	 * 
+	 * @param productId
+	 * @param component
+	 * @param version
+	 * @param summary
+	 * @param op_sys
+	 * @param platform
+	 * @param description
+	 */
+	@OslcDialog(title = "Requirement Creation Dialog", label = "ReqCreationDialog", uri = "serviceProviders/RequirementService{id}/resources/creationDialogRequirement", hintWidth = "0px", hintHeight = "0px", resourceTypes = {
+			PapyrusRequirementProviderConstants.TYPE_REQUIREMENT }, usages = { OslcConstants.OSLC_USAGE_DEFAULT })
+	@POST
 	@Path("creationDialogRequirement")
-    @Consumes({ MediaType.APPLICATION_FORM_URLENCODED})
-    public void createRequirement(
-            @PathParam("id") final String id
-        )
-    {
-    	try {
+	@Consumes({ MediaType.APPLICATION_FORM_URLENCODED })
+	public void createRequirement(@PathParam("id") final String id) {
+		try {
 			Requirement newResource = null;
 
 			Requirement aResource = new Requirement();
 
-    		String[] paramValues;
+			String[] paramValues;
 
-				paramValues = httpServletRequest.getParameterValues("elaboratedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addElaboratedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("elaborates");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addElaborates(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("specifiedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addSpecifiedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("specifies");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addSpecifies(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("affectedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addAffectedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("trackedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addTrackedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("implementedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addImplementedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("validatedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addValidatedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("satisfiedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addSatisfiedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("satisfies");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addSatisfies(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("decomposedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addDecomposedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("decomposes");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addDecomposes(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("constrainedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addConstrainedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("constrains");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addConstrains(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("title");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setTitle(paramValues[0]);
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("description");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setDescription(paramValues[0]);
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("identifier");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setIdentifier(paramValues[0]);
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("shortTitle");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setShortTitle(paramValues[0]);
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("subject");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addSubject(paramValues[i]);
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("creator");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addCreator(new Person(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("contributor");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addContributor(new Person(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("created");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setCreated(new SimpleDateFormat().parse(paramValues[0]));
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("modified");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setModified(new SimpleDateFormat().parse(paramValues[0]));
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("type");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addType(new Type(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("serviceProvider");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setServiceProvider(new URI(paramValues[0]));
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("instanceShape");
-				if (paramValues != null) {
-						if (paramValues.length == 1) {
-							if (paramValues[0].length() != 0)
-								aResource.setInstanceShape(new Link(new URI(paramValues[0])));
-							// else, there is an empty value for that parameter, and hence ignore since the parameter is not actually set.
-						} 
-					
-				}			
-				paramValues = httpServletRequest.getParameterValues("verifiedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addVerifiedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("tracedTo");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addTracedTo(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("refinedBy");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addRefinedBy(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("derivedFrom");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addDerivedFrom(new Link(new URI(paramValues[i])));
-						}
-				}			
-				paramValues = httpServletRequest.getParameterValues("derived");
-				if (paramValues != null) {
-			    		for(int i=0; i<paramValues.length; i++) {
-							aResource.addDerived(new Link(new URI(paramValues[i])));
-						}
-				}			
-      
-    		newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, id);
+			paramValues = httpServletRequest.getParameterValues("elaboratedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addElaboratedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("elaborates");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addElaborates(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("specifiedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addSpecifiedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("specifies");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addSpecifies(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("affectedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addAffectedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("trackedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addTrackedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("implementedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addImplementedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("validatedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addValidatedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("satisfiedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addSatisfiedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("satisfies");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addSatisfies(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("decomposedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addDecomposedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("decomposes");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addDecomposes(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("constrainedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addConstrainedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("constrains");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addConstrains(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("title");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setTitle(paramValues[0]);
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("description");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setDescription(paramValues[0]);
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("identifier");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setIdentifier(paramValues[0]);
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("shortTitle");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setShortTitle(paramValues[0]);
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("subject");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addSubject(paramValues[i]);
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("creator");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addCreator(new Person(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("contributor");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addContributor(new Person(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("created");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setCreated(new SimpleDateFormat().parse(paramValues[0]));
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("modified");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setModified(new SimpleDateFormat().parse(paramValues[0]));
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("type");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addType(new Type(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("serviceProvider");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setServiceProvider(new URI(paramValues[0]));
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("instanceShape");
+			if (paramValues != null) {
+				if (paramValues.length == 1) {
+					if (paramValues[0].length() != 0)
+						aResource.setInstanceShape(new Link(new URI(paramValues[0])));
+					// else, there is an empty value for that parameter, and
+					// hence ignore since the parameter is not actually set.
+				}
+
+			}
+			paramValues = httpServletRequest.getParameterValues("verifiedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addVerifiedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("tracedTo");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addTracedTo(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("refinedBy");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addRefinedBy(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("derivedFrom");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addDerivedFrom(new Link(new URI(paramValues[i])));
+				}
+			}
+			paramValues = httpServletRequest.getParameterValues("derived");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addDerived(new Link(new URI(paramValues[i])));
+				}
+			}
+
+			newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, id);
 
 			if (newResource != null) {
-	    		httpServletRequest.setAttribute("newResource", newResource);
-	    		httpServletRequest.setAttribute("newResourceUri", newResource.getAbout().toString());
-	
-	    		// Send back to the form a small JSON response
-	    		httpServletResponse.setContentType("application/json");
-	    		httpServletResponse.setStatus(Status.CREATED.getStatusCode());
-	    		httpServletResponse.addHeader("Location", newResource.getAbout().toString());
-	    		PrintWriter out = httpServletResponse.getWriter();
-	    		out.print("{" + "\"resource\" : \"" + newResource.getAbout().toString() + "\"}");
-	    		out.close();
+				httpServletRequest.setAttribute("newResource", newResource);
+				httpServletRequest.setAttribute("newResourceUri", newResource.getAbout().toString());
+
+				// Send back to the form a small JSON response
+				httpServletResponse.setContentType("application/json");
+				httpServletResponse.setStatus(Status.CREATED.getStatusCode());
+				httpServletResponse.addHeader("Location", newResource.getAbout().toString());
+				PrintWriter out = httpServletResponse.getWriter();
+				out.print("{" + "\"resource\" : \"" + newResource.getAbout().toString() + "\"}");
+				out.close();
 			}
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		throw new WebApplicationException(e);
-    	}
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new WebApplicationException(e);
+		}
+	}
 
 	/**
 	 * RDF/XML, XML and JSON representation of a single change request
@@ -765,60 +770,71 @@ public class RequirementAndRequirementCollectionService
 	 * @throws ServletException
 	 * @throws URISyntaxException
 	 */
-    @GET
-    @Path("requirements/{requirementId}")
-    @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public Requirement getRequirement(
-                @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
-        ) throws IOException, ServletException, URISyntaxException
-    {
+	@GET
+	@Path("requirements/{requirementId}")
+	@Produces({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	public Requirement getRequirement(@PathParam("id") final String id,
+			@QueryParam("oslc.properties") final String properties,
+			@PathParam("requirementId") final String requirementId)
+			throws IOException, ServletException, URISyntaxException {
 		// Start of user code getResource_init
 		// End of user code
 
-        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
-
-        if (aRequirement != null) {
+		final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id,
+				requirementId, properties);
+		if (aRequirement != null) {
 			// Start of user code getRequirement
+			
 			// End of user code
-            return aRequirement;
-        }
-
-        throw new WebApplicationException(Status.NOT_FOUND);
-    }
-    
-    /**
-     * 
-     * HTML representation for a single change request  - redirect the request directly to Bugzilla
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @throws ServletException
-     * @throws IOException
-     * @throws URISyntaxException
-     */
-	@GET
-    @Path("requirements/{requirementId}")
-	@Produces({ MediaType.TEXT_HTML })
-	public Response getRequirementAsHtml(
-        @PathParam("id") final String id, @PathParam("requirementId") final String requirementId
-        ) throws ServletException, IOException, URISyntaxException
-	{	
-		// Start of user code getRequirementAsHtml_init
-		// End of user code
-
-        final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id, requirementId);
-
-        if (aRequirement != null) {
-        	httpServletRequest.setAttribute("aRequirement", aRequirement);
-			// Start of user code getRequirementAsHtml_setAttributes
-			// End of user code
-
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirement.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
+			return aRequirement;
 		}
 
-        throw new WebApplicationException(Status.NOT_FOUND);
+		throw new WebApplicationException(Status.NOT_FOUND);
 	}
+
+	/**
+	 * 
+	 * HTML representation for a single change request - redirect the request
+	 * directly to Bugzilla
+	 * 
+	 * @param productId
+	 * @param changeRequestId
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	@GET
+	@Path("requirements/{requirementId}")
+	@Produces({ MediaType.TEXT_HTML })
+	public Response getRequirementAsHtml(@PathParam("id") final String id,
+			@QueryParam("oslc.properties") final String properties,
+			@PathParam("requirementId") final String requirementId)
+			throws ServletException, IOException, URISyntaxException {
+		// Start of user code getRequirementAsHtml_init
+		// End of user code
+		final Requirement aRequirement = PapyrusRequirementProviderManager.getRequirement(httpServletRequest, id,
+				requirementId, properties);
+		
+		httpServletRequest.setAttribute("aRequirement", aRequirement);
+		// Start of user code getRequirementAsHtml_setAttributes
+		// End of user code
+		if(properties!=null){
+			if (aRequirement != null) {
+				RequestDispatcher rd = httpServletRequest
+						.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementproperties.jsp");
+				rd.forward(httpServletRequest, httpServletResponse);
+			}
+		}
+			else{if (aRequirement != null) {
+					RequestDispatcher rd = httpServletRequest
+							.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirement.jsp");
+					rd.forward(httpServletRequest, httpServletResponse);
+				}
+			}
+		
+		throw new WebApplicationException(Status.NOT_FOUND);
+	}
+
 	/**
 	 * RDF/XML, XML and JSON representation of a single change request
 	 * 
@@ -829,58 +845,60 @@ public class RequirementAndRequirementCollectionService
 	 * @throws ServletException
 	 * @throws URISyntaxException
 	 */
-    @GET
-    @Path("requirementCollections/{requirementCollectionId}")
-    @Produces({OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON})
-    public RequirementCollection getRequirementCollection(
-                @PathParam("id") final String id, @PathParam("requirementCollectionId") final String requirementCollectionId
-        ) throws IOException, ServletException, URISyntaxException
-    {
+	@GET
+	@Path("requirementCollections/{requirementCollectionId}")
+	@Produces({ OslcMediaType.APPLICATION_RDF_XML, OslcMediaType.APPLICATION_XML, OslcMediaType.APPLICATION_JSON })
+	public RequirementCollection getRequirementCollection(@PathParam("id") final String id,
+			@PathParam("requirementCollectionId") final String requirementCollectionId)
+			throws IOException, ServletException, URISyntaxException {
 		// Start of user code getResource_init
 		// End of user code
 
-        final RequirementCollection aRequirementCollection = PapyrusRequirementProviderManager.getRequirementCollection(httpServletRequest, id, requirementCollectionId);
+		final RequirementCollection aRequirementCollection = PapyrusRequirementProviderManager
+				.getRequirementCollection(httpServletRequest, id, requirementCollectionId);
 
-        if (aRequirementCollection != null) {
+		if (aRequirementCollection != null) {
 			// Start of user code getRequirementCollection
 			// End of user code
-            return aRequirementCollection;
-        }
+			return aRequirementCollection;
+		}
 
-        throw new WebApplicationException(Status.NOT_FOUND);
-    }
-    
-    /**
-     * 
-     * HTML representation for a single change request  - redirect the request directly to Bugzilla
-     * 
-     * @param productId
-     * @param changeRequestId
-     * @throws ServletException
-     * @throws IOException
-     * @throws URISyntaxException
-     */
+		throw new WebApplicationException(Status.NOT_FOUND);
+	}
+
+	/**
+	 * 
+	 * HTML representation for a single change request - redirect the request
+	 * directly to Bugzilla
+	 * 
+	 * @param productId
+	 * @param changeRequestId
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	@GET
-    @Path("requirementCollections/{requirementCollectionId}")
+	@Path("requirementCollections/{requirementCollectionId}")
 	@Produces({ MediaType.TEXT_HTML })
-	public Response getRequirementCollectionAsHtml(
-        @PathParam("id") final String id, @PathParam("requirementCollectionId") final String requirementCollectionId
-        ) throws ServletException, IOException, URISyntaxException
-	{	
+	public Response getRequirementCollectionAsHtml(@PathParam("id") final String id,
+			@PathParam("requirementCollectionId") final String requirementCollectionId)
+			throws ServletException, IOException, URISyntaxException {
 		// Start of user code getRequirementCollectionAsHtml_init
 		// End of user code
 
-        final RequirementCollection aRequirementCollection = PapyrusRequirementProviderManager.getRequirementCollection(httpServletRequest, id, requirementCollectionId);
+		final RequirementCollection aRequirementCollection = PapyrusRequirementProviderManager
+				.getRequirementCollection(httpServletRequest, id, requirementCollectionId);
 
-        if (aRequirementCollection != null) {
-        	httpServletRequest.setAttribute("aRequirementCollection", aRequirementCollection);
+		if (aRequirementCollection != null) {
+			httpServletRequest.setAttribute("aRequirementCollection", aRequirementCollection);
 			// Start of user code getRequirementCollectionAsHtml_setAttributes
 			// End of user code
 
-        	RequestDispatcher rd = httpServletRequest.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollection.jsp");
-        	rd.forward(httpServletRequest,httpServletResponse);
+			RequestDispatcher rd = httpServletRequest
+					.getRequestDispatcher("/hu/bme/mit/papyrus/oslc/adaptor/requirementcollection.jsp");
+			rd.forward(httpServletRequest, httpServletResponse);
 		}
 
-        throw new WebApplicationException(Status.NOT_FOUND);
+		throw new WebApplicationException(Status.NOT_FOUND);
 	}
 }
