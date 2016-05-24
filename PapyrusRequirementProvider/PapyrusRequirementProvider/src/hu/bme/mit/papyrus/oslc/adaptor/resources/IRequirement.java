@@ -367,7 +367,7 @@ public interface IRequirement
 
 	@OslcName("master")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "master")
-	@OslcDescription("The subject is derived from the object")
+	@OslcDescription("The object is master of the subject")
 	@OslcOccurs(Occurs.ZeroOrMany)
 	@OslcValueType(ValueType.Resource)
 	@OslcRepresentation(Representation.Reference)

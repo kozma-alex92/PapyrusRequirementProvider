@@ -739,6 +739,13 @@ public class RequirementAndRequirementCollectionService {
 					aResource.addDerived(new Link(new URI(paramValues[i])));
 				}
 			}
+			
+			paramValues = httpServletRequest.getParameterValues("master");
+			if (paramValues != null) {
+				for (int i = 0; i < paramValues.length; i++) {
+					aResource.addMaster(new Link(new URI(paramValues[i])));
+				}
+			}
 
 			newResource = PapyrusRequirementProviderManager.createRequirement(httpServletRequest, aResource, id);
 

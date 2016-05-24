@@ -910,7 +910,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 	@OslcName("master")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "master")
-	@OslcDescription("The subject is master of the object")
+	@OslcDescription("The object is master of the subject")
 	@OslcOccurs(Occurs.ZeroOrMany)
 	@OslcValueType(ValueType.Resource)
 	@OslcRepresentation(Representation.Reference)
