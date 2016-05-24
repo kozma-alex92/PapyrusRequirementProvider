@@ -80,6 +80,10 @@ End of user code
 				<tr>
 					<td><%=aRequirement.satisfiedByToHtml()%></td>
 				</tr>
+				
+				<tr>
+					<td><%=aRequirement.masterToHtml()%></td>
+				</tr>
 
 			</table>
 			<br>

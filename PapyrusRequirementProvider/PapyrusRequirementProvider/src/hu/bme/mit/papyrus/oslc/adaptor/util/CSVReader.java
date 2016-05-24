@@ -2,7 +2,6 @@ package hu.bme.mit.papyrus.oslc.adaptor.util;
 
 import java.io.BufferedReader;
 
-
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
 import java.io.FileReader;
@@ -15,25 +14,23 @@ import java.nio.file.WatchService;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-
 import hu.bme.mit.papyrus.oslc.adaptor.data.Requirements;
 
-public class CSVReader implements Runnable{
+public class CSVReader implements Runnable {
 
 	private static BufferedReader buffer;
 
 	// Reading order: id, name, text, derived, derivedFrom, tracedTo,
 	// verifiedBy, refinedBy, satisfiedBy
-	
-	private static LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = new LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>>();
+
+	private static LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = new LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>>();
 	private static String modelName;
 
 	static WatchService watcher;
 
-	
 	public void init() throws IOException, InterruptedException {
 		watcher = FileSystems.getDefault().newWatchService();
-		
+
 		Path dir = Paths.get(ConfigProperties.getPropertyValue("input_folder"));
 		try {
 			WatchKey key = dir.register(watcher, StandardWatchEventKinds.ENTRY_MODIFY);
@@ -59,17 +56,17 @@ public class CSVReader implements Runnable{
 	}
 
 	public static void print() {
-		
-		for(String s: multiMap.keySet()){
-			System.out.println("modelName: "+s+"  : "+multiMap.get(s));
+
+		for (String s : multiMap.keySet()) {
+			System.out.println("modelName: " + s + "  : " + multiMap.get(s));
 		}
 
 	}
 
-	public static LinkedHashMap<String,ArrayList<LinkedHashMap<String, ArrayList<String>>>> getProperties() {
+	public static LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> getProperties() {
 		return multiMap;
 	}
-	
+
 	public static String getRequirementCollectionName() {
 		return modelName;
 	}
@@ -77,7 +74,7 @@ public class CSVReader implements Runnable{
 	public static void refreshRequirements() {
 
 		multiMap.clear();
-		
+
 		try {
 			String row;
 			buffer = new BufferedReader(new FileReader(ConfigProperties.getPropertyValue("input_fullpath")));
@@ -95,10 +92,9 @@ public class CSVReader implements Runnable{
 				e.printStackTrace();
 			}
 		}
-		
-		
+
 		Requirements.init();
-		
+
 	}
 
 	private static void splitRows(String row) {
@@ -130,8 +126,19 @@ public class CSVReader implements Runnable{
 					hashMap.put("text", new ArrayList<String>(properties));
 					properties.clear();
 					break;
-				// derived
+				// master
 				case 3:
+					if (!splitData[i].isEmpty()) {
+						secondSplit = splitData[i].split(",");
+						for (int j = 0; j < secondSplit.length; j++) {
+							properties.add(secondSplit[j].trim());
+						}
+						hashMap.put("master", new ArrayList<String>(properties));
+						properties.clear();
+					}
+					break;
+				// derived
+				case 4:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -142,7 +149,7 @@ public class CSVReader implements Runnable{
 					}
 					break;
 				// derivedFrom
-				case 4:
+				case 5:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -153,7 +160,7 @@ public class CSVReader implements Runnable{
 					}
 					break;
 				// tracedTo
-				case 5:
+				case 6:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -165,7 +172,7 @@ public class CSVReader implements Runnable{
 
 					break;
 				// verifiedBy
-				case 6:
+				case 7:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -176,7 +183,7 @@ public class CSVReader implements Runnable{
 					}
 					break;
 				// refinedBy
-				case 7:
+				case 8:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -187,7 +194,7 @@ public class CSVReader implements Runnable{
 					}
 					break;
 				// satisfiedBy
-				case 8:
+				case 9:
 					if (!splitData[i].isEmpty()) {
 						secondSplit = splitData[i].split(",");
 						for (int j = 0; j < secondSplit.length; j++) {
@@ -201,12 +208,11 @@ public class CSVReader implements Runnable{
 
 			}
 			multiMap.get(modelName).add(hashMap);
-		}
-		else if(row.contains("modelName:")){
+		} else if (row.contains("modelName:")) {
 			modelName = row.split(": ")[1];
 			multiMap.put(new String(modelName), new ArrayList<LinkedHashMap<String, ArrayList<String>>>());
 		}
-		
+
 	}
 
 	@Override

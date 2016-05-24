@@ -117,6 +117,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 	private HashSet<Link> refinedBy = new HashSet<Link>();
 	private HashSet<Link> derivedFrom = new HashSet<Link>();
 	private HashSet<Link> derived = new HashSet<Link>();
+	private HashSet<Link> master = new HashSet<Link>();
 
 	public Requirement() throws URISyntaxException {
 		super();
@@ -389,6 +390,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 		setElaborates(r.getElaborates());
 		setImplementedBy(r.getImplementedBy());
 		setInstanceShape(r.getInstanceShape());
+		setMaster(r.getMaster());
 		setModified(r.getModified());
 		setRefinedBy(r.getRefinedBy());
 		setSatisfiedBy(r.getSatisfiedBy());
@@ -571,6 +573,10 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 	public void addRefinedBy(final Link refinedBy) {
 		this.refinedBy.add(refinedBy);
+	}
+	
+	public void addMaster(final Link master) {
+		this.master.add(master);
 	}
 
 	public void addDerivedFrom(final Link derivedFrom) {
@@ -902,6 +908,18 @@ public class Requirement extends AbstractResource implements IRequirement {
 		return refinedBy;
 	}
 
+	@OslcName("master")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "master")
+	@OslcDescription("The subject is master of the object")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+	public HashSet<Link> getMaster() {
+		return master;
+	}
+	
+	
 	@OslcName("derivedFrom")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "derivedFrom")
 	@OslcDescription("The subject is derived from the object")
@@ -1120,6 +1138,14 @@ public class Requirement extends AbstractResource implements IRequirement {
 		this.refinedBy.clear();
 		if (refinedBy != null) {
 			this.refinedBy.addAll(refinedBy);
+		}
+
+	}
+	
+	public void setMaster(final HashSet<Link> master) {
+		this.master.clear();
+		if (master != null) {
+			this.master.addAll(master);
 		}
 
 	}
@@ -2225,7 +2251,7 @@ public class Requirement extends AbstractResource implements IRequirement {
 
 		return s;
 	}
-
+	
 	static public String derivedFromToHtmlForCreation(final HttpServletRequest httpServletRequest) {
 		String s = "";
 
@@ -2233,6 +2259,43 @@ public class Requirement extends AbstractResource implements IRequirement {
 		// End of user code
 
 		s = s + "<label for=\"derivedFrom\">derivedFrom: </LABEL>";
+
+		// Start of user code "Mid:derivedFromToHtmlForCreation(...)"
+		// End of user code
+
+		// Start of user code "Finalize:derivedFromToHtmlForCreation(...)"
+		// End of user code
+
+		return s;
+	}
+
+	static public String masterToHtmlForCreation1(final HttpServletRequest httpServletRequest, final String id) {
+		String s = "";
+
+		// Start of user code "Init:derivedFromToHtmlForCreation1(...final
+		// String id)"
+		// End of user code
+
+		s = s + "<label for=\"master\">master: </LABEL>";
+
+		// Start of user code "Mid:derivedFromToHtmlForCreation1(...final String
+		// id)"
+		// End of user code
+		s = s + "<input name=\"master\" type=\"text\" style=\"width: 400px\" id=\"master\" >";
+		// Start of user code "Finalize:derivedFromToHtmlForCreation1(...final
+		// String id)"
+		// End of user code
+
+		return s;
+	}
+
+	static public String masterToHtmlForCreation(final HttpServletRequest httpServletRequest) {
+		String s = "";
+
+		// Start of user code "Init:derivedFromToHtmlForCreation(...)"
+		// End of user code
+
+		s = s + "<label for=\"master\">master: </LABEL>";
 
 		// Start of user code "Mid:derivedFromToHtmlForCreation(...)"
 		// End of user code
@@ -3466,6 +3529,40 @@ public class Requirement extends AbstractResource implements IRequirement {
 		return s;
 	}
 
+	public String masterToHtml() {
+		String s = "";
+
+		// Start of user code derivedFromtoHtml_init
+		// End of user code
+
+		s = s + "<label for=\"master\"><strong>master</strong>: </LABEL>";
+
+		// Start of user code derivedFromtoHtml_mid
+		// End of user code
+
+		try {
+			s = s + "<ul>";
+			if (!master.isEmpty()) {
+				for (Link l : master) {
+					s = s + "<li>";
+					s = s + "<a href=" + '"';
+					s = s + l.getValue();
+					s = s + '"' + ">" + l.getValue() + "</a>";
+					s = s + "</li>";
+				}
+
+			}
+			s = s + "</ul>";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Start of user code derivedFromtoHtml_finalize
+		// End of user code
+
+		return s;
+	}
+	
 	public String derivedFromToHtml() {
 		String s = "";
 

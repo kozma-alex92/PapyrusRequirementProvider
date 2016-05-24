@@ -91,6 +91,9 @@ End of user code
 				<tr>
 					<td><%=Requirement.satisfiedByToHtmlForCreation1(request, id)%></td>
 				</tr>
+				<tr>
+					<td><%=Requirement.masterToHtmlForCreation1(request, id)%></td>
+				</tr>
 				</table>
 				<h2>Other OSLC Core properties</h2>
 				<table style="clear: both;">

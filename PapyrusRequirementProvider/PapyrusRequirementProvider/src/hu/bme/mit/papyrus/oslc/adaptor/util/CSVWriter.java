@@ -22,6 +22,15 @@ public final class CSVWriter {
 			
 			for(Requirement r: Requirements.getRequirements()){
 				buffer.write(r.getIdentifier()+";"+r.getTitle()+";"+ r.getDescription()+ ";");
+				if(!r.getMaster().isEmpty()){
+					int cnt = 0;
+					for(Link l: r.getMaster()){
+						cnt++;
+						buffer.write(Requirements.getRequirementByAbout(l.getValue()).getTitle());
+						if(cnt<r.getMaster().size()) buffer.write(",");
+					}
+				}
+				buffer.write(";");
 				if(!r.getDerived().isEmpty()){
 					int cnt = 0;
 					for(Link l: r.getDerived()){
@@ -76,6 +85,7 @@ public final class CSVWriter {
 						if(cnt<r.getSatisfiedBy().size()) buffer.write(",");
 					}
 				}
+				buffer.write(";");
 				buffer.newLine();
 			}
 			buffer.flush();

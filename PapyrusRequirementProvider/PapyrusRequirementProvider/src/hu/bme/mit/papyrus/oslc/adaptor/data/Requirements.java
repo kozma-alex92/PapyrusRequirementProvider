@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -21,6 +22,7 @@ public final class Requirements {
 	static List<Requirement> requirements = new ArrayList<Requirement>();
 	static List<RequirementCollection> requirementCollections = new ArrayList<RequirementCollection>();
 	static int collectionCount = 0;
+	static int generatedIDs = 0;
 
 
 	private static Requirement getRequirementByName(String name) {
@@ -69,19 +71,33 @@ public final class Requirements {
 		initReqCollections();
 		initReqs();
 		initReqRelationships();
-		initReqCollectionRelationships();
+		//initReqCollectionRelationships();
 	}
 	
 
 	public static void initReqCollectionRelationships() {
+		
+		/*System.out.println("reqs: ");
+		for(Requirement r: getRequirements()){
+			
+			System.out.println(r.getAbout());
+			
+		}
+		System.out.println("reqs end;");*/
+		
 		LinkedHashMap<String, ArrayList<LinkedHashMap<String, ArrayList<String>>>> multiMap = CSVReader.getProperties();
 		for (String s : multiMap.keySet()) {
 			for (LinkedHashMap<String, ArrayList<String>> req : multiMap.get(s)) {
+				System.out.println("s: "+s);
+				System.out.println("req: "+ req.get("name").get(0));
+				System.out.println("reqabout: "+ getRequirementByName(req.get("name").get(0)).getAbout());
+				System.out.println();
 				
 				getRequirementCollectionByName(s)
 						.addUses(new Link(getRequirementByName(req.get("name").get(0)).getAbout()));
 			}
 		}
+		System.out.println("endreqcollrel");
 
 	}
 
@@ -107,6 +123,10 @@ public final class Requirements {
 						temp.setDescription(req.get("text").get(0));
 					}
 
+					if(temp.getIdentifier()==null || temp.getIdentifier().equals("")) {
+						temp.setIdentifier("tempID"+generatedIDs++);
+					}
+					
 					temp.setAbout(Requirement.constructURI("Provider", temp.getIdentifier()));
 					requirements.add(new Requirement(temp));
 
@@ -136,6 +156,15 @@ public final class Requirements {
 						// get the requirement which has this derived key
 						getRequirementByName(req.get("name").get(0))
 								.addDerived(new Link(getRequirementByName(derivedName).getAbout()));
+					}
+				}
+				if (req.keySet().contains("master")) {
+					// for the current derived name
+					ArrayList<String> d = req.get("master");
+					for (String masterName : d) {
+						// get the requirement which has this derived key
+						getRequirementByName(req.get("name").get(0))
+								.addMaster(new Link(getRequirementByName(masterName).getAbout()));
 					}
 				}
 				if (req.keySet().contains("derivedFrom")) {

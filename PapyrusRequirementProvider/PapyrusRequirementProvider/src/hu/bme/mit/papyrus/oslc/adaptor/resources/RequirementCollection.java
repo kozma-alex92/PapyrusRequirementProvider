@@ -2417,7 +2417,6 @@ public String toHtml(boolean asLocalResource)
 					s = s + '"' +  ">"+l.getValue()+"</a>";
 					s = s + "</li>";
 				}
-				
 			}
 			s = s + "</ul>";
 		} catch (Exception e) {

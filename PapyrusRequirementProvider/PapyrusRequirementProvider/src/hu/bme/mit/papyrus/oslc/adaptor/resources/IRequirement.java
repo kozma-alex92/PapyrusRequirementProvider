@@ -100,6 +100,7 @@ public interface IRequirement
     public void addRefinedBy(final Link refinedBy );
     public void addDerivedFrom(final Link derivedFrom );
     public void addDerived(final Link derived );
+    public void addMaster(final Link master );
 
 	@OslcName("elaboratedBy")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "elaboratedBy")
@@ -364,6 +365,16 @@ public interface IRequirement
 	@OslcReadOnly(false)
     public HashSet<Link> getRefinedBy();
 
+	@OslcName("master")
+	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "master")
+	@OslcDescription("The subject is derived from the object")
+	@OslcOccurs(Occurs.ZeroOrMany)
+	@OslcValueType(ValueType.Resource)
+	@OslcRepresentation(Representation.Reference)
+	@OslcReadOnly(false)
+    public HashSet<Link> getMaster();
+	
+	
 	@OslcName("derivedFrom")
 	@OslcPropertyDefinition(PapyrusRequirementProviderConstants.REQUIREMENT_MANAGEMENT_NAMSPACE + "derivedFrom")
 	@OslcDescription("The subject is derived from the object")
@@ -414,5 +425,6 @@ public interface IRequirement
     public void setRefinedBy(final HashSet<Link> refinedBy );
     public void setDerivedFrom(final HashSet<Link> derivedFrom );
     public void setDerived(final HashSet<Link> derived );
+    public void setMaster(final HashSet<Link> master );
 }
 
